@@ -1,0 +1,494 @@
+h1 {
+  font-family: brandon-grotesque, sans-serif;
+  font-weight: inherit;
+  font-style: inherit;
+}
+
+h2 {
+  font-family: brandon-grotesque, sans-serif;
+  font-weight: inherit;
+  font-style: inherit;
+}
+
+h3 {
+  font-family: brandon-grotesque, sans-serif;
+  font-weight: inherit;
+  font-style: inherit;
+}
+
+h4 {
+  font-family: brandon-grotesque, sans-serif;
+  font-weight: inherit;
+  font-style: inherit;
+}
+
+h5 {
+  font-family: brandon-grotesque, sans-serif;
+  font-weight: in;
+  font-style: inherit;
+}
+
+p {
+  font-family: interstate-mono;
+  font-weight: inherit;
+  font-style: inherit;
+}
+
+a {
+  text-decoration: inherit;
+  color: inherit;
+}
+
+a:hover {
+  text-decoration: none;
+  color: inherit;
+}
+
+.center {
+  display: center;
+  margin-left: auto;
+  margin-right: center;
+  box-align: center;
+}
+
+text {
+  font-family: interstate-mono;
+}
+
+body {
+  font: 15px sans-serif;
+  font-weight: inherit;
+}
+
+.axis path, .axis line {
+  fill: none;
+  stroke: black;
+}
+
+.x.axis path {
+  display: ruby-base-container;
+}
+
+.y.axis path {
+  stroke: black;
+}
+
+.line {
+  fill: none;
+  stroke-width: 3px;
+  stroke-linecap: round;
+}
+
+.rect {
+  fill: inherit;
+  stroke-width: 1;
+}
+
+.header {
+  margin-top: 60px;
+  text-align: inherit;
+  font-family: brandon-grotesque, sans-serif;
+  font-weight: inherit;
+}
+
+.dotButtons {
+  font-family: brandon-grotesque, sans-serif;
+  font-weight: 500;
+}
+
+input {
+  margin-right: 10px;
+  font-family: brandon-grotesque, sans-serif;
+  font-weight: 500;
+  font-size: 10;
+}
+
+.form-check-label {
+  font-size: 0.8em;
+  margin-right: 20px;
+}
+
+.radio-toolbar {
+  margin: 10px;
+  display: none;
+}
+
+.radio-toolbar input[type="radio"] {
+  opacity: 0;
+  position: fixed;
+  width: 0;
+}
+
+.radio-toolbar label {
+  border: none;
+  color: black;
+  padding: 10px 10px;
+  font-size: 16px;
+  font-family: brandon-grotesque;
+  border-radius: 10px;
+  cursor: pointer;
+  ;
+}
+
+.radio-toolbar label:hover {
+  background-color: #ddd;
+}
+
+.radio-toolbar input[type="radio"]:checked+label {
+  background-color: #e7e7e7;
+  stroke: rgb(0, 0, 0);
+  stroke-width: 1px;
+}
+
+div.tooltip {
+  position: absolute;
+  text-align: center;
+  width: 100px;
+  height: 100px;
+  padding: 2px;
+  font-family: brandon-grotesque, sans-serif;
+  font-weight: 700;
+  background: white;
+  stroke-width: 1;
+  stroke: black;
+  border-radius: 8px;
+  pointer-events: none;
+}
+
+.MsoNormal {
+  padding-bottom: 7px;
+}
+
+.d3-tip {
+  line-height: 1;
+  font-family: brandon-grotesque, sans-serif;
+  padding: 0px;
+  background: white;
+  border-radius: 8px;
+  border-color: black;
+  border-width: 1px;
+  border: black;
+  font-size: 12px;
+  stroke-width: 2px;
+}
+
+@media only screen and (max-width:850px) {
+  #tipDiv {
+    display: none;
+  }
+  #bigmenu {
+    display: none;
+  }
+  #smallmenu {
+    display: inline;
+  }
+  #bigprojected {
+    display: none;
+  }
+  #smallprojected {
+    display: inline;
+  }
+  .MsoNormal {
+    font-size: 10px;
+  }
+  .computer {
+    display: none;
+  }
+  .phone {
+    display: inline;
+  }
+}
+#bubblemap {
+  width: 100%;
+}
+
+@media only screen and (min-width:851px) {
+  #tipDiv {
+    display: inline;
+  }
+  #bigmenu {
+    display: inline;
+  }
+  #smallmenu {
+    display: none;
+  }
+  #bigprojected {
+    display: inline;
+  }
+  #smallprojected {
+    display: none;
+  }
+  .MsoNormal {
+    font-size: 14px;
+  }
+  .computer {
+    display: inline;
+  }
+  .phone {
+    display: none;
+  }
+  
+}
+
+.pollline {
+  fill: none;
+  stroke-width: 3px;
+  opacity: 0.8;
+  stroke-linecap: round;
+}
+
+/*x-axis styles*/
+
+.c_x_axis text {
+  font: 15px brandon-grotesque;
+}
+
+.c_x_axis path, .c_x_axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+/*y-axis styles*/
+
+.c_y_axis text {
+  font: 15px brandon-grotesque;
+}
+
+.c_y_axis path, .c_y_axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+/*y-axis gridline styles*/
+
+.c_y_grid {
+  fill: none;
+  stroke: grey;
+  stroke-dasharray: 3 3;
+  stroke-width: 1px;
+  opacity: 0.7;
+}
+
+/*Smoothed line styles*/
+
+.c_sline1 {
+  fill: none;
+  stroke: darkblue;
+  stroke-width: 3px;
+  opacity: 0.4;
+}
+
+/* The container must be positioned relative: */
+
+.custom-select {
+  margin-left: 40%;
+  text-align: center;
+  position: relative;
+  font-family: brandon-grotesque;
+  font-size: 15px;
+}
+
+.select-selected {
+  background-color: rgb(130, 183, 236);
+}
+
+/* Style the arrow inside the select element: */
+
+.select-selected:after {
+  position: absolute;
+  content: "";
+  top: 14px;
+  right: 10px;
+  width: 0;
+  height: 0;
+  border: 6px solid transparent;
+  border-color: #fff transparent transparent transparent;
+}
+
+/* Point the arrow upwards when the select box is open (active): */
+
+.select-selected.select-arrow-active:after {
+  border-color: transparent transparent #fff transparent;
+  top: 7px;
+}
+
+/* style the items (options), including the selected item: */
+
+.select-items div, .select-selected {
+  color: #ffffff;
+  padding: 8px 16px;
+  border: 1px solid transparent;
+  border-color: transparent transparent rgba(196, 36, 36, 0.1) transparent;
+  cursor: pointer;
+}
+
+/* Style items (options): */
+
+.select-items {
+  position: absolute;
+  background-color: rgb(130, 183, 236);
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 99;
+}
+
+/* Hide the items when the select box is closed: */
+
+.select-items div:hover, .same-as-selected {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.custom-select {
+  display: none;
+}
+
+.y-axis line {
+  opacity: .2;
+}
+
+.y-axis path {
+  display: none;
+}
+
+.line {
+  fill: none;
+  stroke-width: 3px;
+  opacity: 1;
+}
+
+.overlay {
+  fill: none;
+  pointer-events: all;
+}
+
+.hoverCircle {
+  opacity: 1;
+}
+
+#win {
+  display: none;
+}
+
+#delegates {
+  display: none;
+}
+
+.legend {
+  position: static;
+}
+
+.btn {
+  border: none;
+  color: white;
+  padding: 10px 10px;
+  font-size: 2vw;
+  font-family: brandon-grotesque;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.default {
+  background-color: #e7e7e7;
+  color: black;
+}
+
+/* Gray */
+
+.default:hover {
+  background: #ddd;
+}
+
+.slidecontainer {
+  width: 100%;
+}
+
+.slider {
+  -webkit-appearance: none;
+  width: 95%;
+  height: 25px;
+  background: #d3d3d3;
+  outline: none;
+  margin-top: -10px;
+  opacity: 0.7;
+  -webkit-transition: .2s;
+  transition: opacity .2s;
+  margin-left: 2.5%;
+}
+
+#biden-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20;
+  height: 25px;
+  background: #00C181;
+  cursor: pointer;
+  opacity: 1;
+}
+
+#bloomberg-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20;
+  height: 25px;
+  background: #FF6060;
+  cursor: pointer;
+  opacity: 1;
+}
+
+#buttigieg-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20;
+  height: 25px;
+  background: #FFE130;
+  cursor: pointer;
+  opacity: 1;
+}
+
+#klobuchar-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20;
+  height: 25px;
+  background: #FF8D32;
+  cursor: pointer;
+  opacity: 1;
+}
+
+#sanders-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20;
+  height: 25px;
+  background: #0091FF;
+  cursor: pointer;
+  opacity: 1;
+}
+#steyer-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20;
+  height: 25px;
+  background: #FF2EF0;
+  cursor: pointer;
+  opacity: 1;
+}
+#warren-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20;
+  height: 25px;
+  background: #AF0BFF;
+  cursor: pointer;
+  opacity: 1;
+}
+
+div.sticky {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  background-color: white;
+}
