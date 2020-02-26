@@ -21,7 +21,7 @@ var formatvalue = d3.format(".3");
 d3.csv("https://projects.jhkforecasts.com/presidential_forecast/pollster-ratings.csv", pollster_ratings => {
     var svg = d3.select("#usmap")
         .append("svg")
-        .attr("viewBox", '100 -150 820 2800');
+        .attr("viewBox", '100 -150 820 600');
 
     var width3 = 1020;
     var height3 = 500;
@@ -391,8 +391,8 @@ d3.csv("https://projects.jhkforecasts.com/presidential_forecast/pollster-ratings
                         .enter()
                         .append("path")
                         .attr("d", path)
-                        .style("stroke", "BLACK")
-                        .style("stroke-width", "1")
+                        .style("stroke", "lightgrey")
+                        .style("stroke-width", 1.5)
                         .style("fill", d => color(d.properties.gop_win))
                         .on("mouseover", function (d) {
 
@@ -561,7 +561,14 @@ d3.csv("https://projects.jhkforecasts.com/presidential_forecast/pollster-ratings
             ]
 
             tossupstates.forEach((d, j) => {
-                d.biden = Biden[d.index].dem_win
+                d.electoralvotes = Biden[d.index].electoralvotes
+                d.Biden = Biden[d.index].dem_win
+                d.Bloomberg = Bloomberg[d.index].dem_win
+                d.Buttigeig = Buttigeig[d.index].dem_win
+                d.Klobuchar = Klobuchar[d.index].dem_win
+                d.Sanders = Sanders[d.index].dem_win
+                d.Steyer = Steyer[d.index].dem_win
+                d.Warren = Warren[d.index].dem_win
                 return d;
             })
 
