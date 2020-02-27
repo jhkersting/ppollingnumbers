@@ -452,7 +452,7 @@ d3.csv("https://projects.jhkforecasts.com/presidential_forecast/pollster-ratings
                         .data(json.features)
                         .enter()
                         .append("a")
-                        .attr("href", "#state-search")
+                        .attr("href", "#polls")
                         .append("path")
                         .attr("d", path)
                         .style("stroke", "lightgrey")
