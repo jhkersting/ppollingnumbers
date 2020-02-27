@@ -1127,7 +1127,7 @@ d3.csv("https://projects.jhkforecasts.com/presidential_forecast/pollster-ratings
                     .attr("fill", "grey")
                     .style("font-weight", "600")
                     .style("font-size", 15)
-                    .attr("text-anchor", "middle")
+                    .attr("text-anchor", "start")
                     .attr("dominant-baseline", "middle")
 
                 top.append("rect")
