@@ -299,13 +299,13 @@
         </table>
     </div>
     <h1
-        style="text-align: center;font-size: 5vw;font-weight: 900; border-bottom: solid;border-top: solid;border-right: solid;border-left: solid;background-color: darkblue;color: white;">
+        style="text-align: center;font-size: 5vw;font-weight: 900;background-color: darkblue;color: white;">
         Who Beats Trump</h1>
     <p style="text-indent: 20px;margin: 10px;"> The data created below is calculated from the 538 polling database. The
         polling averagea are calculated by combining the national polling and pvi with state polling averages. States
         with more polling however don't weigh the national vote as much. </p>
     <h2 style="text-align: center;font-weight: 500;">Choose Candidate</h2>
-    <select style="margin-left: 35%;width:30%;margin-top: 0px;" class="selctbox" id="selectbox">
+    <select style="margin-left: 35%;width:30%;margin-top: 0px;" class="selectbox" id="selectbox">
         <option value="Biden">Joe Biden</option>
         <option value="Bloomberg">Mike Bloomberg</option>
         <option value="Buttigieg">Pete Buttigieg</option>
@@ -315,12 +315,12 @@
         <option value="Warren">Elizabeth Warren</option>
     </select>
     <div style="margin-top: 10px" id="usmap"></div>
-    <script src="test.js"></script>
+
     <h1 style="text-align: center;font-weight: 500;">Chances of winning battlegroud states</h1>
     <div id="tossups"></div>
 
     <div>
-        <table style="border-collapse: collapse; border: none;margin-top: 20px;" cellspacing="0" cellpadding="0"
+        <table style="border-collapse: collapse; border: none;margin-top: 20px;margin-bottom: 20px;" cellspacing="0" cellpadding="0"
             width="100%">
             <tbody>
                 <tr>
@@ -335,7 +335,7 @@
                 </tr>
                 <tr>
                     <td style="width: 50%;  ">
-                        <select style="margin-left: 5%;width:90%;margin-top: 10px;" id="state-search">
+                        <select class="selectbox"style="margin-left: 5%;width:90%;margin-top: 10px;" id="state-search">
                             <option value="All">All</option>
                             <option value="Alabama">Alabama</option>
                             <option value="Alaska">Alaska</option>
@@ -388,11 +388,12 @@
                             <option value="West Virginia">West Virginia</option>
                             <option value="Wisconsin">Wisconsin</option>
                             <option value="Wyoming">Wyoming</option>
+                            <option value="US">National</option>
                         </select>
 
                     </td>
-                    <td style="width: 50%; ">
-                        <select style="margin-left: 5%;width:90%;margin-top: 10px;text-align: center;" class="selctbox"
+                    <td style="width: 50%;margin-bottom: 20px; ">
+                        <select style="margin-left: 5%;width:90%;margin-top: 10px;text-align: center;" class="selectbox"
                             id="candidate-filter">
                             <option value="All">All</option>
                             <option value="Biden">Joe Biden</option>
@@ -408,9 +409,9 @@
             </tbody>
         </table>
     </div>
-    <div style="margin-top: 20px" id="overview"></div>
-    <div id="polls"></div>
-
+    <div id="overview"></div>
+    <div style="margin-top: 20px"id="polls"></div>
+    <script src="test.js"></script>
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
     <ins class="adsbygoogle" style="display:block" data-ad-format="fluid" data-ad-layout-key="-h2+d+5c-9-3e"
         data-ad-client="ca-pub-8025120308040073" data-ad-slot="8603820464"></ins>

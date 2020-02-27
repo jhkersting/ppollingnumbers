@@ -3,11 +3,19 @@ var timeparse = d3.timeParse("%m/%d/%y")
 var time_scale = 86400000
 var national_third_party = .03
 var simulations = 10000
-
+var timeformat = d3.timeFormat("%b. %d")
+var wholeformat = d3.format(".1f")
 
 var color = d3.scaleLinear()
     .domain([0, 0.5, 1])
     .range(["#0091FF", "white", "#FF6060"]);
+var gopscale = d3.scaleLinear()
+    .domain([20, 80])
+    .range(["white", "#FF6060"]);
+
+var demscale = d3.scaleLinear()
+    .domain([20, 80])
+    .range(["white", "#0091FF"]);
 
 
 var gopwincol = "#FF6060"
@@ -21,7 +29,7 @@ var numberFormat = d3.format(".0%");
 d3.csv("https://projects.jhkforecasts.com/presidential_forecast/pollster-ratings.csv", pollster_ratings => {
     var svg = d3.select("#usmap")
         .append("svg")
-        .attr("viewBox", '100 -150 820 620');
+        .attr("viewBox", '100 -150 820 650');
 
     var width3 = 1020;
     var height3 = 500;
@@ -49,7 +57,7 @@ d3.csv("https://projects.jhkforecasts.com/presidential_forecast/pollster-ratings
         return d["538Grade"]
     })
     var pollster_bias = pollster_ratings.map((d, i) => {
-        return +d.MeanRevertedBias
+        return d.MeanRevertedBias == NaN?0:d.MeanRevertedBias
     })
     var grade_scale = [
         { Grade: "A+", Value: 1.5 },
@@ -125,8 +133,8 @@ d3.csv("https://projects.jhkforecasts.com/presidential_forecast/pollster-ratings
                     n: datanew[i][0].sample_size,
                     date: timeparse(datanew[i][0].end_date),
                     population: datanew[i][0].population,
-                    grade: pollster_grade[pollster_names.indexOf(datanew[i][0].pollster)] == undefined ? "C+" : pollster_grade[pollster_names.indexOf(datanew[i][0].pollster)],
-                    bias: pollster_bias[pollster_names.indexOf(datanew[i][0].pollster)] == undefined ? "C+" : pollster_bias[pollster_names.indexOf(datanew[i][0].pollster)],
+                    grade: pollster_grade[pollster_names.indexOf(datanew[i][0].pollster)] == undefined ? "-" : pollster_grade[pollster_names.indexOf(datanew[i][0].pollster)],
+                    bias: pollster_bias[pollster_names.indexOf(datanew[i][0].pollster)] == undefined ? 0 : pollster_bias[pollster_names.indexOf(datanew[i][0].pollster)],
                     dem: datanew[i][0].answer,
                     gop: datanew[i][1].answer,
                     dem_pct: +datanew[i][0].pct,
@@ -376,7 +384,14 @@ d3.csv("https://projects.jhkforecasts.com/presidential_forecast/pollster-ratings
                         .style("font-size", 30)
                         .attr("text-anchor", "middle")
 
-
+                        svg.append("text")
+                        .text("click state for recent state polls")
+                        .attr("y", 475)
+                        .attr("x", 600)
+                        .attr("fill", "black")
+                        .style("font-weight", "500")
+                        .style("font-size", 25)
+                        .attr("text-anchor", "start")
 
                     svg.append("text")
                         .text("Win Presidency")
@@ -437,7 +452,7 @@ d3.csv("https://projects.jhkforecasts.com/presidential_forecast/pollster-ratings
                         .data(json.features)
                         .enter()
                         .append("a")
-                        .attr("href", "#polls")
+                        .attr("href", "#state-search")
                         .append("path")
                         .attr("d", path)
                         .style("stroke", "lightgrey")
@@ -863,7 +878,7 @@ d3.csv("https://projects.jhkforecasts.com/presidential_forecast/pollster-ratings
                 .style("font-size", 20)
                 .attr("text-anchor", "middle")
 
-            var SVG = d3.select("#polls")
+            var bottom = d3.select("#polls")
                 .append("svg")
                 .attr("viewBox", '0 0 1000 610');
 
@@ -871,7 +886,8 @@ d3.csv("https://projects.jhkforecasts.com/presidential_forecast/pollster-ratings
                 .append("svg")
                 .attr("viewBox", '0 0 1000 200');
 
-            
+                document.getElementById("state-search").value = "US" 
+
 
             t(d3.select('#state-search').property('value'), d3.select('#candidate-filter').property('value'));
             function t(state, candidate) {
@@ -883,25 +899,236 @@ d3.csv("https://projects.jhkforecasts.com/presidential_forecast/pollster-ratings
 
 
                 var statedata = [
-                    state == "All" ? "" : Biden.filter(d => d.state == state)[0].margin,
-                    state == "All" ? "" : Bloomberg.filter(d => d.state == state)[0].margin,
-                    state == "All" ? "" : Buttigieg.filter(d => d.state == state)[0].margin,
-                    state == "All" ? "" : Klobuchar.filter(d => d.state == state)[0].margin,
-                    state == "All" ? "" : Sanders.filter(d => d.state == state)[0].margin,
-                    state == "All" ? "" : Steyer.filter(d => d.state == state)[0].margin,
-                    state == "All" ? "" : Warren.filter(d => d.state == state)[0].margin,
+                    state == "US" ? "" : Biden.filter(d => d.state == state)[0].margin,
+                    state == "US" ? "" : Bloomberg.filter(d => d.state == state)[0].margin,
+                    state == "US" ? "" : Buttigieg.filter(d => d.state == state)[0].margin,
+                    state == "US" ? "" : Klobuchar.filter(d => d.state == state)[0].margin,
+                    state == "US" ? "" : Sanders.filter(d => d.state == state)[0].margin,
+                    state == "US" ? "" : Steyer.filter(d => d.state == state)[0].margin,
+                    state == "US" ? "" : Warren.filter(d => d.state == state)[0].margin,
                 ]
                 console.log(statedata)
-                var height = finaldata.length * 40 + 40
+                document.getElementById("overview").style.display = state == "All" ? "none" : "inline"
+                var topheight = finaldata.length * 40 + 25
 
-                SVG.attr("viewBox", '0 0 1000 ' + height)
+                bottom.attr("viewBox", '0 0 1000 ' + topheight)
+                bottom.append("rect")
+                    .attr("fill", "white")
+                    .attr("x", 0)
+                    .attr("y", 0)
+                    .attr("width", 1000)
+                    .attr("height", topheight)
+
+                bottom.selectAll("states")
+                    .data(finaldata)
+                    .enter()
+                    .append("rect")
+                    .attr("y", (d, i) => 26 + i * 40)
+                    .attr("x", 610)
+                    .attr("height", 40)
+                    .attr("width", 80)
+                    .attr("fill", d => demscale(d.dem_pct))
+
+                    bottom.selectAll("states")
+                    .data(finaldata)
+                    .enter()
+                    .append("rect")
+                    .attr("y", (d, i) => 26 + i * 40)
+                    .attr("x", 710)
+                    .attr("height", 40)
+                    .attr("width", 80)
+                    .attr("fill", d => gopscale(d.gop_pct))
+                
+                    bottom.append("text")
+                    .text("Pollster")
+                    .attr("y", 12)
+                    .attr("x",  50)
+                    .attr("fill", "black")
+                    .style("font-weight", "600")
+                    .style("font-size", 20)
+                    .attr("text-anchor", "start")
+                    .attr("dominant-baseline", "middle")
+
+                    bottom.append("text")
+                    .text("Date")
+                    .attr("y", 12)
+                    .attr("x",  300)
+                    .attr("fill", "black")
+                    .style("font-weight", "600")
+                    .style("font-size", 20)
+                    .attr("text-anchor", "start")
+                    .attr("dominant-baseline", "middle")
+
+
+                    bottom.append("text")
+                    .text("Adj. Margin")
+                    .attr("y", 12)
+                    .attr("x",  950)
+                    .attr("fill", "black")
+                    .style("font-weight", "600")
+                    .style("font-size", 20)
+                    .attr("text-anchor", "middle")
+                    .attr("dominant-baseline", "middle")
+
+                    bottom.append("text")
+                    .text("State")
+                    .attr("y", 12)
+                    .attr("x",  420)
+                    .attr("fill", "black")
+                    .style("font-weight", "600")
+                    .style("font-size", 20)
+                    .attr("text-anchor", "middle")
+                    .attr("dominant-baseline", "middle")
+
+                    bottom.append("text")
+                    .text("Grade")
+                    .attr("y", 12)
+                    .attr("x",  500)
+                    .attr("fill", "black")
+                    .style("font-weight", "600")
+                    .style("font-size", 20)
+                    .attr("text-anchor", "middle")
+                    .attr("dominant-baseline", "middle")
+
+                    bottom.selectAll("cands")
+                    .data(finaldata)
+                    .enter()
+                    .append("text")
+                    .text(d => d.pollster)
+                    .attr("y", (d, i) => 40 + i * 40)
+                    .attr("x", (d, i) => 50)
+                    .attr("fill", "black")
+                    .style("font-weight", "600")
+                    .style("font-size", 15)
+                    .attr("text-anchor", "start")
+                    .attr("dominant-baseline", "middle")
+                    .call(wrap, 250)
+
+
+
+                bottom.selectAll("cands")
+                    .data(finaldata)
+                    .enter()
+                    .append("text")
+                    .text(d => d.dem)
+                    .attr("y", (d, i) => 40 + i * 40)
+                    .attr("x", (d, i) => 600)
+                    .attr("fill", d => d.margin < 0 ? "lightgrey" : "black")
+                    .style("font-weight", "600")
+                    .style("font-size", 15)
+                    .attr("text-anchor", "end")
+                    .attr("dominant-baseline", "middle")
+
+                bottom.selectAll("cands")
+                    .data(finaldata)
+                    .enter()
+                    .append("text")
+                    .text(d => d.dem_pct)
+                    .attr("y", (d, i) => 40 + i * 40)
+                    .attr("x", (d, i) => 650)
+                    .attr("fill", "black")
+                    .style("font-weight", "600")
+                    .style("font-size", 15)
+                    .attr("text-anchor", "middle")
+                    .attr("dominant-baseline", "middle")
+
+                bottom.selectAll("cands")
+                    .data(finaldata)
+                    .enter()
+                    .append("text")
+                    .text(d => d.gop_pct)
+                    .attr("y", (d, i) => 40 + i * 40)
+                    .attr("x", (d, i) => 750)
+                    .attr("fill", "black")
+                    .style("font-weight", "600")
+                    .style("font-size", 15)
+                    .attr("text-anchor", "middle")
+                    .attr("dominant-baseline", "middle")
+
+                bottom.selectAll("cands")
+                    .data(finaldata)
+                    .enter()
+                    .append("text")
+                    .text(d => d.gop)
+                    .attr("y", (d, i) => 40 + i * 40)
+                    .attr("x", (d, i) => 800)
+                    .attr("fill", d => d.margin > 0 ? "lightgrey" : "black")
+                    .style("font-weight", "600")
+                    .style("font-size", 15)
+                    .attr("text-anchor", "start")
+                    .attr("dominant-baseline", "middle")
+
+
+                    bottom.selectAll("cands")
+                    .data(finaldata)
+                    .enter()
+                    .append("text")
+                    .text(d => d.margin > 0 ? "D+" + wholeformat(d.margin) : "R+" + wholeformat(Math.abs(d.margin)))
+                    .attr("y", (d, i) => 40 + i * 40)
+                    .attr("x", (d, i) => 950)
+                    .attr("fill", d => d.margin > 0 ? demwincol : gopwincol)
+                    .style("font-weight", "600")
+                    .style("font-size", 15)
+                    .attr("text-anchor", "middle")
+                    .attr("dominant-baseline", "middle")
+
+                bottom.selectAll("cands")
+                    .data(finaldata)
+                    .enter()
+                    .append("text")
+                    .text(d => d.state)
+                    .attr("y", (d, i) => 40 + i * 40)
+                    .attr("x", (d, i) => 420)
+                    .attr("fill", "black")
+                    .style("font-weight", "600")
+                    .style("font-size", 15)
+                    .attr("text-anchor", "middle")
+                    .attr("dominant-baseline", "middle")
+
+                bottom.selectAll("cands")
+                    .data(finaldata)
+                    .enter()
+                    .append("text")
+                    .text(d => d.grade)
+                    .attr("y", (d, i) => 40 + i * 40)
+                    .attr("x", (d, i) => 500)
+                    .attr("fill", d => "grade")
+                    .style("font-weight", "600")
+                    .style("font-size", 15)
+                    .attr("text-anchor", "middle")
+                    .attr("dominant-baseline", "middle")
+
+                bottom.selectAll("cands")
+                    .data(finaldata)
+                    .enter()
+                    .append("line")
+                    .attr("y1", (d, i) => 26 + i * 40)
+                    .attr("x1", (d, i) => 0)
+                    .attr("y2", (d, i) => 26 + i * 40)
+                    .attr("x2", (d, i) => 1000)
+                    .attr("stroke", "lightgrey")
+                    .attr("stroke-width", 1)
+                    .call(wrap, 250)
+
+                bottom.selectAll("cands")
+                    .data(finaldata)
+                    .enter()
+                    .append("text")
+                    .text(d => timeformat(d.date))
+                    .attr("y", (d, i) => 40 + i * 40)
+                    .attr("x", (d, i) => 300)
+                    .attr("fill", "grey")
+                    .style("font-weight", "600")
+                    .style("font-size", 15)
+                    .attr("text-anchor", "middle")
+                    .attr("dominant-baseline", "middle")
 
                 top.append("rect")
-                .attr("fill", "white")
-                .attr("x", 0)
-                .attr("y", 0)
-                .attr("width", 100)
-                .attr("height", 200)
+                    .attr("fill", "white")
+                    .attr("x", 0)
+                    .attr("y", 0)
+                    .attr("width", 1000)
+                    .attr("height", 200)
 
                 top.selectAll("cands")
                     .data(candidates)
@@ -916,21 +1143,24 @@ d3.csv("https://projects.jhkforecasts.com/presidential_forecast/pollster-ratings
                     .attr("text-anchor", "middle")
                     .attr("dominant-baseline", "middle")
 
+
+
+
                 top.selectAll("cands")
                     .data(statedata)
                     .enter()
                     .append("text")
-                    .text(d => d)
+                    .text(d => d > 0 ? "D+" + numberformat(d) : "R+" + numberformat(Math.abs(d)))
                     .attr("y", (d, i) => 100)
                     .attr("x", (d, i) => 80 + i * 140)
-                    .attr("fill", "black")
+                    .attr("fill", d => d == 0 ? "Black" : d > 0 ? demwincol : gopwincol)
                     .style("font-weight", "600")
                     .style("font-size", 20)
                     .attr("text-anchor", "middle")
                     .attr("dominant-baseline", "middle")
 
                 top.append("text")
-                    .text("Marigin vs Trump in " + state)
+                    .text("Margin vs Trump in " + state)
                     .attr("y", (d, i) => 20)
                     .attr("x", (d, i) => 500)
                     .attr("fill", "black")
@@ -938,6 +1168,43 @@ d3.csv("https://projects.jhkforecasts.com/presidential_forecast/pollster-ratings
                     .style("font-size", 30)
                     .attr("text-anchor", "middle")
                     .attr("dominant-baseline", "middle")
+
+
+
+                function wrap(text, width) {
+                    text.each(function () {
+                        var text = d3.select(this),
+                            words = text.text().split(/\s+/).reverse(),
+                            word,
+                            line = [],
+                            lineNumber = 0,
+                            lineHeight = 1.1, // ems
+                            x = text.attr("x"),
+                            y = text.attr("y"),
+                            dy = 0, //parseFloat(text.attr("dy")),
+                            tspan = text.text(null)
+                                .append("tspan")
+                                .attr("x", x)
+                                .attr("y", y)
+                                .attr("dy", dy + "em");
+                        while (word = words.pop()) {
+                            line.push(word);
+                            tspan.text(line.join(" "));
+                            if (tspan.node().getComputedTextLength() > width) {
+                                line.pop();
+                                tspan.text(line.join(" "));
+                                line = [word];
+                                tspan = text.append("tspan")
+                                    .attr("x", x)
+                                    .attr("y", y)
+                                    .attr("dy", ++lineNumber * lineHeight + dy + "em")
+                                    .text(word);
+                            }
+                        }
+                    });
+                }
+
+
 
 
                 var states = d3.select("#state-search")
