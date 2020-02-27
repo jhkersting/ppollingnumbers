@@ -657,7 +657,7 @@ d3.csv("https://projects.jhkforecasts.com/presidential_forecast/pollster-ratings
                 .data(national_data)
                 .enter()
                 .append("text")
-                .text(d => sd.dem_ev)
+                .text(d => d.dem_ev)
                 .attr("y", (d, i) => 70)
                 .attr("x", (d, i) => 300 + i * 100)
                 .attr("fill", "black")
