@@ -873,11 +873,11 @@ d3.csv("https://projects.jhkforecasts.com/presidential_forecast/pollster-ratings
                 .style("font-size", 20)
                 .attr("text-anchor", "middle")
 
-            var bottom = d3.select("#polls")
+            var bottom = d3.select("#bottom")
                 .append("svg")
                 .attr("viewBox", '0 0 1000 610');
 
-            var top = d3.select("#overview")
+            var top = d3.select("#top")
                 .append("svg")
                 .attr("viewBox", '0 0 1000 200');
 
@@ -903,7 +903,7 @@ d3.csv("https://projects.jhkforecasts.com/presidential_forecast/pollster-ratings
                     state == "US" ? "" : Warren.filter(d => d.state == state)[0].margin,
                 ]
                 console.log(statedata)
-                document.getElementById("overview").style.display = state == "All" ? "none" : "inline"
+                document.getElementById("top").style.display = state == "All" ? "none" : "inline"
                 var topheight = finaldata.length * 40 + 25
 
                 bottom.attr("viewBox", '0 0 1000 ' + topheight)
@@ -956,7 +956,7 @@ d3.csv("https://projects.jhkforecasts.com/presidential_forecast/pollster-ratings
 
 
                     bottom.append("text")
-                    .text("Adj. Margin")
+                    .text("Margin")
                     .attr("y", 12)
                     .attr("x",  950)
                     .attr("fill", "black")
