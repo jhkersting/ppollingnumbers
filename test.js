@@ -1218,7 +1218,7 @@ d3.csv("https://projects.jhkforecasts.com/presidential_forecast/pollster-ratings
             }
             var selectbox = d3.select("#selectbox")
                 .on("change", function () {
-                    t(this.value);
+                    update(this.value);
                 })
 
         })
