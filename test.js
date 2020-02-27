@@ -129,6 +129,7 @@ d3.csv("https://projects.jhkforecasts.com/presidential_forecast/pollster-ratings
                     state: datanew[i][0].state == "" ? "US" : datanew[i][0].state,
                     pollster: datanew[i][0].pollster,
                     id: +datanew[i][0].pollster_id,
+                    url: datanew[i][0].url,
                     sponsors: datanew[i][0].sponsors,
                     n: datanew[i][0].sample_size,
                     date: timeparse(datanew[i][0].end_date),
@@ -140,6 +141,7 @@ d3.csv("https://projects.jhkforecasts.com/presidential_forecast/pollster-ratings
                     dem_pct: +datanew[i][0].pct,
                     gop_pct: +datanew[i][1].pct,
                     poll_index: datanew[i][0].state == "" ? "US" + datanew[i][0].pollster : datanew[i][0].state + datanew[i][0].pollster,
+                    margin:   +datanew[i][0].pct- +datanew[i][1].pct
                 }
             })
             var data_new = data_new.filter(d => d.gop == "Trump")
@@ -451,10 +453,6 @@ d3.csv("https://projects.jhkforecasts.com/presidential_forecast/pollster-ratings
                         .style("stroke", "lightgrey")
                         .style("stroke-width", 1.5)
                         .style("fill", d => color(d.properties.gop_win))
-                        .on("click", function (d) {
-                            t(d.properties.name, "All");
-                            document.getElementById("state-search").value = d.properties.name
-                        })
                         .on("mouseover", function (d) {
 
                             tool_tip.show();
@@ -528,6 +526,10 @@ d3.csv("https://projects.jhkforecasts.com/presidential_forecast/pollster-ratings
                         .on('mouseout',
                             function (d) {
                                 tool_tip.hide()
+                            })
+                            .on("click", function (d) {
+                                t(d.properties.name, "All");
+                                document.getElementById("state-search").value = d.properties.name
                             })
 
                     d3.csv("https://projects.jhkforecasts.com/presidential_forecast/US%20Map.csv", maplabels => {
@@ -986,6 +988,8 @@ d3.csv("https://projects.jhkforecasts.com/presidential_forecast/pollster-ratings
                     bottom.selectAll("cands")
                     .data(finaldata)
                     .enter()
+                    .append("a")
+                    .attr("href",d=>d.url)
                     .append("text")
                     .text(d => d.pollster)
                     .attr("y", (d, i) => 40 + i * 40)
@@ -995,6 +999,14 @@ d3.csv("https://projects.jhkforecasts.com/presidential_forecast/pollster-ratings
                     .style("font-size", 15)
                     .attr("text-anchor", "start")
                     .attr("dominant-baseline", "middle")
+                    .on("mouseover", function (d) {
+                        d3.select(this)
+                        .attr("text-decoration","underline")
+                    })
+                    .on("mouseout", function (d) {
+                        d3.select(this)
+                        .attr("text-decoration","none")
+                    })
                     .call(wrap, 250)
 
 
@@ -1101,7 +1113,7 @@ d3.csv("https://projects.jhkforecasts.com/presidential_forecast/pollster-ratings
                     .attr("x2", (d, i) => 1000)
                     .attr("stroke", "lightgrey")
                     .attr("stroke-width", 1)
-                    .call(wrap, 250)
+                   
 
                 bottom.selectAll("cands")
                     .data(finaldata)
