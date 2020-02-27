@@ -384,14 +384,7 @@ d3.csv("https://projects.jhkforecasts.com/presidential_forecast/pollster-ratings
                         .style("font-size", 30)
                         .attr("text-anchor", "middle")
 
-                        svg.append("text")
-                        .text("click state for recent state polls")
-                        .attr("y", 475)
-                        .attr("x", 600)
-                        .attr("fill", "black")
-                        .style("font-weight", "500")
-                        .style("font-size", 25)
-                        .attr("text-anchor", "start")
+                      
 
                     svg.append("text")
                         .text("Win Presidency")
