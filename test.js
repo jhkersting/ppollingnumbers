@@ -17,7 +17,7 @@ var thirdwincol = "#FFE130"
 
 
 var numberformat = d3.format(".1%");
-var formatvalue = d3.format(".3");
+var numberFormat = d3.format(".0%");
 d3.csv("https://projects.jhkforecasts.com/presidential_forecast/pollster-ratings.csv", pollster_ratings => {
     var svg = d3.select("#usmap")
         .append("svg")
@@ -278,7 +278,7 @@ d3.csv("https://projects.jhkforecasts.com/presidential_forecast/pollster-ratings
                     dem_win: 1 - gop_win_election,
                     gop_avg_ev: gop_avg_ev,
                     dem_avg_ev: 538 - gop_avg_ev,
-                    gop_ev: d3.sum(state_proj.filter(d => d.margin < 0), d => d.electoralvotes).electoralvotes,
+                    gop_ev: d3.sum(state_proj.filter(d => d.margin < 0), d => d.electoralvotes),
                     dem_ev: d3.sum(state_proj.filter(d => d.margin > 0), d => d.electoralvotes)
                 }
                 national_data.push(candidate_win)
@@ -288,14 +288,14 @@ d3.csv("https://projects.jhkforecasts.com/presidential_forecast/pollster-ratings
 
             var Biden = state_data[0]
             var Bloomberg = state_data[1]
-            var Buttigeig = state_data[2]
+            var Buttigieg = state_data[2]
             var Klobuchar = state_data[3]
             var Sanders = state_data[4]
             var Steyer = state_data[5]
             var Warren = state_data[6]
 
             var state_cand = Biden.concat(Bloomberg)
-            var state_cand = state_cand.concat(Buttigeig)
+            var state_cand = state_cand.concat(Buttigieg)
             var state_cand = state_cand.concat(Klobuchar)
             var state_cand = state_cand.concat(Sanders)
             var state_cand = state_cand.concat(Steyer)
@@ -372,6 +372,53 @@ d3.csv("https://projects.jhkforecasts.com/presidential_forecast/pollster-ratings
                         .attr("y", 40)
                         .attr("x", 580)
                         .attr("fill", gopwincol)
+                        .style("font-weight", "600")
+                        .style("font-size", 30)
+                        .attr("text-anchor", "middle")
+
+
+
+                        svg.append("text")
+                        .text("Win Presidency")
+                        .attr("y", -120)
+                        .attr("x", 510)
+                        .attr("fill", "Black")
+                        .style("font-weight", "600")
+                        .style("font-size", 30)
+                        .attr("text-anchor", "middle")
+
+                        svg.append("text")
+                        .text(national[0].gop_ev)
+                        .attr("y", 20)
+                        .attr("x", 780)
+                        .attr("fill", "Black")
+                        .style("font-weight", "600")
+                        .style("font-size", 30)
+                        .attr("text-anchor", "middle")
+
+                        svg.append("text")
+                        .text("Electoral Votes")
+                        .attr("y", -20)
+                        .attr("x", 780)
+                        .attr("fill", "Black")
+                        .style("font-weight", "600")
+                        .style("font-size", 30)
+                        .attr("text-anchor", "middle")
+                    
+                        svg.append("text")
+                        .text(national[0].dem_ev)
+                        .attr("y", 20)
+                        .attr("x", 250)
+                        .attr("fill", "Black")
+                        .style("font-weight", "600")
+                        .style("font-size", 30)
+                        .attr("text-anchor", "middle")
+
+                        svg.append("text")
+                        .text("Electoral Votes")
+                        .attr("y", -20)
+                        .attr("x", 250)
+                        .attr("fill", "Black")
                         .style("font-weight", "600")
                         .style("font-size", 30)
                         .attr("text-anchor", "middle")
@@ -562,30 +609,255 @@ d3.csv("https://projects.jhkforecasts.com/presidential_forecast/pollster-ratings
 
             tossupstates.forEach((d, j) => {
                 d.electoralvotes = Biden[d.index].electoralvotes
+                d.pvi = pvi[d.index].pvi
                 d.Biden = Biden[d.index].dem_win
                 d.Bloomberg = Bloomberg[d.index].dem_win
-                d.Buttigeig = Buttigeig[d.index].dem_win
+                d.Buttigieg = Buttigieg[d.index].dem_win
                 d.Klobuchar = Klobuchar[d.index].dem_win
                 d.Sanders = Sanders[d.index].dem_win
                 d.Steyer = Steyer[d.index].dem_win
                 d.Warren = Warren[d.index].dem_win
                 return d;
             })
+
+            tossupstates.sort((a,b)=>a.pvi-b.pvi)
+            
+            
             var SVG = d3.select("#tossups")
-            .append("svg")
-            .attr("viewBox", '0 0 1000 1000');
+                .append("svg")
+                .attr("viewBox", '0 0 1000 610');
+
+
+            SVG.selectAll("cands")
+                .data(national_data)
+                .enter()
+                .append("text")
+                .text(d => d.candidate)
+                .attr("y", (d, i) => 10)
+                .attr("x", (d, i) => 300 + i * 100)
+                .attr("fill", "black")
+                .style("font-weight", "600")
+                .style("font-size", 20)
+                .attr("text-anchor", "middle")
+                .attr("dominant-baseline", "middle")
+
+                SVG.selectAll("cands")
+                .data(national_data)
+                .enter()
+                .append("text")
+                .text(d => numberFormat(d.dem_win))
+                .attr("y", (d, i) => 40)
+                .attr("x", (d, i) => 300 + i * 100)
+                .attr("fill", "black")
+                .style("font-weight", "600")
+                .style("font-size", 20)
+                .attr("text-anchor", "middle")
+                .attr("dominant-baseline", "middle")
+                SVG.selectAll("cands")
+                .data(national_data)
+                .enter()
+                .append("text")
+                .text(d => sd.dem_ev)
+                .attr("y", (d, i) => 70)
+                .attr("x", (d, i) => 300 + i * 100)
+                .attr("fill", "black")
+                .style("font-weight", "600")
+                .style("font-size", 20)
+                .attr("text-anchor", "middle")
+                .attr("dominant-baseline", "middle")
+
+            SVG.selectAll("states")
+                .data(tossupstates)
+                .enter()
+                .append("rect")
+                .attr("y", (d, i) => 85 + i * 30)
+                .attr("x", 260)
+                .attr("height", 25)
+                .attr("width", 80)
+                .attr("fill", d => color(1 - d.Biden))
+
+            SVG.selectAll("states")
+                .data(tossupstates)
+                .enter()
+                .append("rect")
+                .attr("y", (d, i) => 85 + i * 30)
+                .attr("x", 360)
+                .attr("height", 25)
+                .attr("width", 80)
+                .attr("fill", d => color(1 - d.Bloomberg))
+
+            SVG.selectAll("states")
+                .data(tossupstates)
+                .enter()
+                .append("rect")
+                .attr("y", (d, i) => 85 + i * 30)
+                .attr("x", 460)
+                .attr("height", 25)
+                .attr("width", 80)
+                .attr("fill", d => color(1 - d.Buttigieg))
+
+
+            SVG.selectAll("states")
+                .data(tossupstates)
+                .enter()
+                .append("rect")
+                .attr("y", (d, i) => 85 + i * 30)
+                .attr("x", 560)
+                .attr("height", 25)
+                .attr("width", 80)
+                .attr("fill", d => color(1 - d.Klobuchar))
+
+
+            SVG.selectAll("states")
+                .data(tossupstates)
+                .enter()
+                .append("rect")
+                .attr("y", (d, i) => 85 + i * 30)
+                .attr("x", 660)
+                .attr("height", 25)
+                .attr("width", 80)
+                .attr("fill", d => color(1 - d.Sanders))
+
+
+            SVG.selectAll("states")
+                .data(tossupstates)
+                .enter()
+                .append("rect")
+                .attr("y", (d, i) => 85 + i * 30)
+                .attr("x", 760)
+                .attr("height", 25)
+                .attr("width", 80)
+                .attr("fill", d => color(1 - d.Steyer))
+
+
+            SVG.selectAll("states")
+                .data(tossupstates)
+                .enter()
+                .append("rect")
+                .attr("y", (d, i) => 85 + i * 30)
+                .attr("x", 860)
+                .attr("height", 25)
+                .attr("width", 80)
+                .attr("fill", d => color(1 - d.Warren))
+
 
             SVG.selectAll("states")
                 .data(tossupstates)
                 .enter()
                 .append("text")
-                .text(d=>d.state)
-                .attr("y", (d,i)=>100+ i*30)
+                .text(d => d.state)
+                .attr("y", (d, i) => 100 + i * 30)
                 .attr("x", 10)
-                .attr("fill","black")
+                .attr("fill", "black")
                 .style("font-weight", "600")
                 .style("font-size", 20)
                 .attr("text-anchor", "start")
+
+
+
+            SVG.selectAll("states")
+                .data(tossupstates)
+                .enter()
+                .append("text")
+                .text(d => d.electoralvotes)
+                .attr("y", (d, i) => 100 + i * 30)
+                .attr("x", 200)
+                .attr("fill", "black")
+                .style("font-weight", "600")
+                .style("font-size", 20)
+                .attr("text-anchor", "middle")
+                .attr("dominant-baseline", "middle")
+
+            SVG.selectAll("states")
+                .data(tossupstates)
+                .enter()
+                .append("text")
+                .text(d => numberFormat(d.Biden))
+                .attr("y", (d, i) => 100 + i * 30)
+                .attr("x", 300)
+                .attr("fill", "black")
+                .style("font-weight", "600")
+                .style("font-size", 20)
+                .attr("dominant-baseline", "middle")
+                .attr("text-anchor", "middle")
+
+            SVG.selectAll("states")
+                .data(tossupstates)
+                .enter()
+                .append("text")
+                .text(d => numberFormat(d.Bloomberg))
+                .attr("y", (d, i) => 100 + i * 30)
+                .attr("x", 400)
+                .attr("fill", "black")
+                .attr("dominant-baseline", "middle")
+                .style("font-weight", "600")
+                .style("font-size", 20)
+                .attr("text-anchor", "middle")
+
+            SVG.selectAll("states")
+                .data(tossupstates)
+                .enter()
+                .append("text")
+                .text(d => numberFormat(d.Buttigieg))
+                .attr("y", (d, i) => 100 + i * 30)
+                .attr("x", 500)
+                .attr("fill", "black")
+                .attr("dominant-baseline", "middle")
+                .style("font-weight", "600")
+                .style("font-size", 20)
+                .attr("text-anchor", "middle")
+
+            SVG.selectAll("states")
+                .data(tossupstates)
+                .enter()
+                .append("text")
+                .text(d => numberFormat(d.Klobuchar))
+                .attr("y", (d, i) => 100 + i * 30)
+                .attr("x", 600)
+                .attr("fill", "black")
+                .style("font-weight", "600")
+                .style("font-size", 20)
+                .attr("dominant-baseline", "middle")
+                .attr("text-anchor", "middle")
+
+            SVG.selectAll("states")
+                .data(tossupstates)
+                .enter()
+                .append("text")
+                .text(d => numberFormat(d.Sanders))
+                .attr("y", (d, i) => 100 + i * 30)
+                .attr("x", 700)
+                .attr("fill", "black")
+                .style("font-weight", "600")
+                .style("font-size", 20)
+                .attr("dominant-baseline", "middle")
+                .attr("text-anchor", "middle")
+
+            SVG.selectAll("states")
+                .data(tossupstates)
+                .enter()
+                .append("text")
+                .text(d => numberFormat(d.Steyer))
+                .attr("y", (d, i) => 100 + i * 30)
+                .attr("x", 800)
+                .attr("dominant-baseline", "middle")
+                .attr("fill", "black")
+                .style("font-weight", "600")
+                .style("font-size", 20)
+                .attr("text-anchor", "middle")
+
+            SVG.selectAll("states")
+                .data(tossupstates)
+                .enter()
+                .append("text")
+                .text(d => numberFormat(d.Warren))
+                .attr("y", (d, i) => 100 + i * 30)
+                .attr("x", 900)
+                .attr("fill", "black")
+                .style("font-weight", "600")
+                .attr("dominant-baseline", "middle")
+                .style("font-size", 20)
+                .attr("text-anchor", "middle")
 
 
 
