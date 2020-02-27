@@ -21,7 +21,7 @@ var formatvalue = d3.format(".3");
 d3.csv("https://projects.jhkforecasts.com/presidential_forecast/pollster-ratings.csv", pollster_ratings => {
     var svg = d3.select("#usmap")
         .append("svg")
-        .attr("viewBox", '100 -150 820 600');
+        .attr("viewBox", '100 -150 820 620');
 
     var width3 = 1020;
     var height3 = 500;
@@ -278,8 +278,8 @@ d3.csv("https://projects.jhkforecasts.com/presidential_forecast/pollster-ratings
                     dem_win: 1 - gop_win_election,
                     gop_avg_ev: gop_avg_ev,
                     dem_avg_ev: 538 - gop_avg_ev,
-                    gop_ev: d3.sum(state_proj.filter(d=>d.margin<0),d=>d.electoralvotes).electoralvotes,
-                    dem_ev: d3.sum(state_proj.filter(d=>d.margin>0),d=>d.electoralvotes)
+                    gop_ev: d3.sum(state_proj.filter(d => d.margin < 0), d => d.electoralvotes).electoralvotes,
+                    dem_ev: d3.sum(state_proj.filter(d => d.margin > 0), d => d.electoralvotes)
                 }
                 national_data.push(candidate_win)
                 state_data.push(state_proj)
@@ -339,7 +339,7 @@ d3.csv("https://projects.jhkforecasts.com/presidential_forecast/pollster-ratings
                         .attr("x", 0)
                         .attr("y", -150)
                         .attr("width", 10000)
-                        .attr("height", 1000)
+                        .attr("height", 200)
                     svg.append("image")
                         .attr("xlink:href", d => "https://jhkforecasts.com/Trump-01.png")
                         .attr("x", 530)
@@ -555,7 +555,7 @@ d3.csv("https://projects.jhkforecasts.com/presidential_forecast/pollster-ratings
                     "index": 52
                 },
                 {
-                    "state": "Wisconsin-2",
+                    "state": "Nebraska-2",
                     "index": 54
                 }
             ]
@@ -571,6 +571,23 @@ d3.csv("https://projects.jhkforecasts.com/presidential_forecast/pollster-ratings
                 d.Warren = Warren[d.index].dem_win
                 return d;
             })
+            var SVG = d3.select("#tossups")
+            .append("svg")
+            .attr("viewBox", '0 0 1000 1000');
+
+            SVG.selectAll("states")
+                .data(tossupstates)
+                .enter()
+                .append("text")
+                .text(d=>d.state)
+                .attr("y", (d,i)=>100+ i*30)
+                .attr("x", 10)
+                .attr("fill","black")
+                .style("font-weight", "600")
+                .style("font-size", 20)
+                .attr("text-anchor", "start")
+
+
 
             console.log(tossupstates)
             var selectbox = d3.select("#selectbox")
