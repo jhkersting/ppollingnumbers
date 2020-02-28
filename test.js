@@ -958,7 +958,7 @@ d3.csv("https://projects.jhkforecasts.com/presidential_forecast/pollster-ratings
 
 
                 bottom.append("text")
-                    .text("Margin")
+                    .text("Adj. Margin")
                     .attr("y", 12)
                     .attr("x", 950)
                     .attr("fill", "black")
