@@ -26,7 +26,7 @@ var thirdwincol = "#FFE130"
 
 var numberformat = d3.format(".1%");
 var numberFormat = d3.format(".0%");
-d3.csv("https://projects.jhkforecasts.com/presidential_forecast/pollster-ratings.csv", pollster_ratings => {
+d3.csv("https://projects.jhkforecasts.com/presidential-forecast/pollster-ratings.csv", pollster_ratings => {
     var svg = d3.select("#usmap")
         .append("svg")
         .attr("viewBox", '100 -150 820 650');
@@ -85,7 +85,7 @@ d3.csv("https://projects.jhkforecasts.com/presidential_forecast/pollster-ratings
         return d.Value
     })
 
-    d3.csv("https://projects.jhkforecasts.com/presidential_forecast/partisanlean.csv", pvi => {
+    d3.csv("https://projects.jhkforecasts.com/presidential-forecast/partisanlean.csv", pvi => {
         var pvi = pvi.map((d, i) => {
             return {
                 state: d.state,
@@ -314,7 +314,7 @@ d3.csv("https://projects.jhkforecasts.com/presidential_forecast/pollster-ratings
                 var state = state_data.filter(d => d.candidate == input)
                 var national = national_data.filter(d => d.candidate == input)
                 console.log(national)
-                d3.json("https://projects.jhkforecasts.com/presidential_forecast/us-states.json", function (json) {
+                d3.json("https://projects.jhkforecasts.com/presidential-forecast/us-states.json", function (json) {
 
 
                     for (var i = 0; i < state.length; i++) {
@@ -527,7 +527,7 @@ d3.csv("https://projects.jhkforecasts.com/presidential_forecast/pollster-ratings
                             document.getElementById("state-search").value = d.properties.name
                         })
 
-                    d3.csv("https://projects.jhkforecasts.com/presidential_forecast/US%20Map.csv", maplabels => {
+                    d3.csv("https://projects.jhkforecasts.com/presidential-forecast/US%20Map.csv", maplabels => {
 
                         svg.selectAll("labels")
                             .data(maplabels)
