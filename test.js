@@ -794,7 +794,6 @@ d3.csv("https://projects.jhkforecasts.com/presidential_forecast/pollster-ratings
 
             t(d3.select('#state-search').property('value'), d3.select('#candidate-filter').property('value'));
             function t(state, candidate) {
-                var datanew = state == "All" ? data_new.slice(0, 100) : data_new.filter(d => d.state == state)
 
                 var finaldata = candidate == "All" ? datanew : datanew.filter(d => d.dem == candidate)
                 console.log(finaldata)
