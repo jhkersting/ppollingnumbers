@@ -26,7 +26,7 @@ var thirdwincol = "#FFE130"
 
 var numberformat = d3.format(".1%");
 var numberFormat = d3.format(".0%");
-d3.csv("https://projects.jhkforecasts.com/presidential_forecast/pollster-ratings.csv", pollster_ratings => {
+d3.csv("https://data.jhkforecasts.com/pollster-ratings.csv", pollster_ratings => {
     var svg = d3.select("#usmap")
         .append("svg")
         .attr("viewBox", '100 -150 820 650');
