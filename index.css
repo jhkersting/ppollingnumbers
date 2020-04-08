@@ -230,3 +230,7 @@ input {
     display: none;
   }
 }
+.hoverstate{
+  fill:none;
+  pointer-events: all;
+}

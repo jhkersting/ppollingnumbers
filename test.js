@@ -437,6 +437,7 @@ d3.csv("https://data.jhkforecasts.com/pollster-ratings.csv", pollster_ratings =>
                         .style("font-size", 30)
                         .attr("text-anchor", "middle")
 
+
                     svg.append("g")
                         .selectAll("path2")
                         .data(json.features)
@@ -448,6 +449,16 @@ d3.csv("https://data.jhkforecasts.com/pollster-ratings.csv", pollster_ratings =>
                         .style("stroke", "lightgrey")
                         .style("stroke-width", 1.5)
                         .style("fill", d => color(d.properties.gop_win))
+
+                    svg.append("g")
+                        .selectAll("path")
+                        .data(json.features)
+                        .enter()
+                        .append("a")
+                        .attr("href", "#polls")
+                        .append("path")
+                        .attr("class", "statesover")
+                        .attr("d", path)
                         .on("mouseover", function (d) {
 
                             tool_tip.show();
@@ -537,9 +548,9 @@ d3.csv("https://data.jhkforecasts.com/pollster-ratings.csv", pollster_ratings =>
                             .text(d => d.label)
                             .attr("x", d => d.xValue)
                             .attr("y", d => d.yValue)
-                            .attr("font-family", "brandon-grotesque")
-                            .attr("font-weight", "700")
-                            .attr("font-size", 12)
+                            .style("font-family", "source-code-pro")
+                            .attr("font-weight", "400")
+                            .attr("font-size", 10)
                             .attr("fill", "black")
                             .attr("text-anchor", "middle")
                     })
@@ -671,7 +682,7 @@ d3.csv("https://data.jhkforecasts.com/pollster-ratings.csv", pollster_ratings =>
                 .attr("x1", 10)
                 .attr("x1", 990)
                 .attr("y1", 80)
-                .attr("stroke","black")
+                .attr("stroke", "black")
 
             SVG.selectAll("cands")
                 .data(national_data)
