@@ -445,6 +445,23 @@ d3.csv("https://data.jhkforecasts.com/pollster-ratings.csv", pollster_ratings =>
                         .style("stroke-width", 1.5)
                         .style("fill", d => color(d.properties.gop_win))
 
+                    d3.csv("https://projects.jhkforecasts.com/presidential_forecast/US%20Map.csv", maplabels => {
+
+                        svg.selectAll("labels")
+                            .data(maplabels)
+                            .enter()
+                            .append("text")
+                            .attr("class", "winner")
+                            .text(d => d.label)
+                            .attr("x", d => d.xValue)
+                            .attr("y", d => d.yValue)
+                            .style("font-family", "sf-mono")
+                            .style("font-weight", "500")
+                            .attr("font-size", 10)
+                            .attr("fill", "black")
+                            .attr("text-anchor", "middle")
+                    })
+
                     svg.append("g")
                         .selectAll("path")
                         .data(json.features)
@@ -501,10 +518,10 @@ d3.csv("https://data.jhkforecasts.com/pollster-ratings.csv", pollster_ratings =>
 
 
                             tipSVG.append("text")
-                                .text(d.properties.margin > 0 ?"Biden +"+numberformat(d.properties.margin):"Trump +"+numberformat(-d.properties.margin))
+                                .text(d.properties.margin > 0 ? "Biden +" + numberformat(d.properties.margin) : "Trump +" + numberformat(-d.properties.margin))
                                 .attr("y", 150)
                                 .attr("x", 87.5)
-                                .attr("fill",d.properties.margin > 0 ?color(0): color(100))
+                                .attr("fill", d.properties.margin > 0 ? color(0) : color(100))
                                 .style("font-weight", "500")
                                 .style("font-size", 20)
                                 .attr("text-anchor", "middle")
@@ -520,22 +537,7 @@ d3.csv("https://data.jhkforecasts.com/pollster-ratings.csv", pollster_ratings =>
                             document.getElementById("state-search").value = d.properties.name
                         })
 
-                    d3.csv("https://projects.jhkforecasts.com/presidential_forecast/US%20Map.csv", maplabels => {
 
-                        svg.selectAll("labels")
-                            .data(maplabels)
-                            .enter()
-                            .append("text")
-                            .attr("class", "winner")
-                            .text(d => d.label)
-                            .attr("x", d => d.xValue)
-                            .attr("y", d => d.yValue)
-                            .style("font-family", "sf-mono")
-                            .style("font-weight", "500")
-                            .attr("font-size", 10)
-                            .attr("fill", "black")
-                            .attr("text-anchor", "middle")
-                    })
                 })
             }
             var tossupstates = [
@@ -665,7 +667,7 @@ d3.csv("https://data.jhkforecasts.com/pollster-ratings.csv", pollster_ratings =>
                 .attr("x1", 990)
                 .attr("y1", 80)
                 .attr("stroke", "black")
-            
+
 
             SVG.selectAll("states")
                 .data(tossupstates)
@@ -723,7 +725,7 @@ d3.csv("https://data.jhkforecasts.com/pollster-ratings.csv", pollster_ratings =>
 
 
 
-           
+
 
 
 
