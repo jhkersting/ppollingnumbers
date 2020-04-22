@@ -501,7 +501,7 @@ d3.csv("https://data.jhkforecasts.com/pollster-ratings.csv", pollster_ratings =>
 
 
                             tipSVG.append("text")
-                                .text(d.properties.margin > 0 ?"Trump +"+numberformat(d.properties.margin):"Biden +"+numberformat(-d.properties.margin))
+                                .text(d.properties.margin > 0 ?"Biden +"+numberformat(d.properties.margin):"Trump +"+numberformat(-d.properties.margin))
                                 .attr("y", 150)
                                 .attr("x", 87.5)
                                 .attr("fill",d.properties.margin > 0 ?color(0): color(100))
@@ -530,7 +530,7 @@ d3.csv("https://data.jhkforecasts.com/pollster-ratings.csv", pollster_ratings =>
                             .text(d => d.label)
                             .attr("x", d => d.xValue)
                             .attr("y", d => d.yValue)
-                            .style("font-family", "source-code-pro")
+                            .style("font-family", "sf-mono")
                             .attr("font-weight", "400")
                             .attr("font-size", 10)
                             .attr("fill", "black")
