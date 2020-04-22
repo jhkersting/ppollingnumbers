@@ -9,11 +9,11 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:site" content="@jhkforecast">
     <meta name="twitter:creator" content="@jhkersting">
-    <meta name="twitter:title" content="General Elections Polls">
+    <meta name="twitter:title" content="Who can beat Trump?">
     <meta name="twitter:description" content="Tracking 2020 general election polls">
-    <meta name="twitter:image" content="http://jhkforecasts.com/general-election-01.png">
+    <meta name="twitter:image" content="http://politicalpolls.jhkforecasts.com/whocanbeatrump-01.png">
 
-    <title>General Election Polling Average</title>
+    <title>Who can Beat Trump?</title>
     <script data-ad-client="ca-pub-8025120308040073" async
         src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
     <!-- Global site tag (gtag.js) - Google Analytics -->
@@ -176,7 +176,7 @@
         </script>
     </div>
     <h1 style="text-align: center;font-size: 5vw;font-weight: 900;background-color: #3E5AA9;color: white;">
-        Trump V. Biden</h1>
+        Who Beats Trump</h1>
     <a href="https://twitter.com/jhkersting">
         <h2 style="font-weight: 700;text-decoration: underline;">Created By : Jack Kersting</h2>
     </a>
@@ -186,7 +186,11 @@
         election was today, compared to the forecast which accounts for the uncertaintity due to the distance from the
         election. Another difference is the forecast uses other factors besides polling. </p>
 
-
+    <h2 style="text-align: center;font-weight: 500;">Choose Candidate</h2>
+    <select style="margin-left: 35%;width:30%;margin-top: 0px;" class="selectbox" id="selectbox">
+        <option value="Biden">Joe Biden</option>
+        <option value="Sanders">Bernie Sanders</option>
+    </select>
     <div style="margin-top: 10px" id="usmap"></div>
 
     <h1 style="text-align: center;font-weight: 500;">Chances of winning battlegroud states</h1>
@@ -266,7 +270,14 @@
                         </select>
 
                     </td>
-                    
+                    <td style="width: 50%;margin-bottom: 20px; ">
+                        <select style="margin-left: 25%;width:50%;margin-top: 10px;text-align: center;"
+                            class="selectbox" id="candidate-filter">
+                            <option value="All">All</option>
+                            <option value="Biden">Joe Biden</option>
+                            <option value="Sanders">Bernie Sanders</option>
+                        </select>
+                    </td>
                 </tr>
             </tbody>
         </table>
