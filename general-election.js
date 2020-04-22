@@ -54,7 +54,7 @@ d3.csv("https://data.jhkforecasts.com/2020-presidential.csv", data => {
             ev: +d.electoral_vote,
             state: d.state,
             party: d.party,
-            pollAvg: d.poll_avg == 0 ? +d.ss_avg : +d.poll_avg
+            avg: d.poll_avg == 0 ? +d.ss_avg : +d.poll_avg
         }
     })
     var dates = data.map(d => {
@@ -70,8 +70,8 @@ d3.csv("https://data.jhkforecasts.com/2020-presidential.csv", data => {
             var state = states[b]
             var abbrev = map_labels.filter(d => d.state == state).length == 0 ? "" : abbrev = map_labels.filter(d => d.state == state)[0].label
             var stateData = dateData.filter(d => d.state == state)
-            var gopVote = stateData.filter(d => d.party == "gop")[0].pollAvg
-            var demVote = stateData.filter(d => d.party == "dem")[0].pollAvg
+            var gopVote = stateData.filter(d => d.party == "gop")[0].avg
+            var demVote = stateData.filter(d => d.party == "dem")[0].avg
             var ev = stateData.filter(d => d.party == "gop")[0].ev
             var margin = gopVote - demVote
             var ps = {
@@ -86,10 +86,9 @@ d3.csv("https://data.jhkforecasts.com/2020-presidential.csv", data => {
             newData.push(ps)
         }
     }
-    var data = newData.flat()
-    var sd = data.splice(data.length - 56, data.length)
+    var sd = newData.flat()
+    var sd = sd.splice(sd.length - 56, sd.length)
     var boxstates = [sd[28], sd[44], sd[20], sd[38], sd[6], sd[7], sd[19], sd[50]]
-    console.log(boxstates)
 
     map.selectAll()
         .data(boxstates)
@@ -299,7 +298,274 @@ d3.csv("https://data.jhkforecasts.com/2020-presidential.csv", data => {
 
                     tool_tip.hide()
                 });
+        bottom("Texas")
+        function bottom(input) {
+            var stateData = data.filter(d => d.state == input)
+            var time_data = []
+            for (let a = 0; a < dates.length; a++) {
+                var date = dates[a]
+                var dateValue = dp(date)
+                var dateData = stateData.filter(d => d.rawDate == date)
+                var gop_poll = dateData.filter(d => d.party == "gop")[0].avg
+                var dem_poll = dateData.filter(d => d.party == "dem")[0].avg
+                var td = {
+                    date: dateValue,
+                    gopavg: gop_poll,
+                    demavg: dem_poll,
+                }
+                time_data.push(td)
+            }
+            var line_data = time_data.flat()
+            console.log(line_data)
+
+            var margin = { top: 20, right: 40, bottom: 20, left: 20 }
+            var width = 1400 - margin.left - margin.right
+            var height = 600 - margin.top - margin.bottom
+            var axisPad = 12
+            var parseTime = d3.timeParse("%Y-%m-%d"),
+                formatDate = d3.timeFormat("%b - %d"),
+                formatMonth = d3.timeFormat("%Y-%m-%d"),
+                bisectDate = d3.bisector(d => d.date).left,
+                wholevalue = d3.format(".0f"),
+                onevalue = d3.format(".1f")
+
+            var time = d3.select("#time").append("svg")
+                .attr("viewBox", "0 0 1400 600")
+                .append('g')
+                .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 
+            var x = d3.scaleTime()
+                .rangeRound([margin.left, width - margin.right])
+                .domain([new Date(2020, 2, 1), new Date(2020, 10, 3)])
+
+            var y = d3.scaleLinear()
+                .rangeRound([height - margin.bottom, margin.top]);
+
+
+            var z = d3.scaleOrdinal()
+                .range(colors)
+                ;
+
+            var line = d3.line()
+                .curve(d3.curveLinear)
+                .x(d => x(d.date))
+                .y(d => y(d.pct));
+
+            time.append("g")
+                .attr("class", "x-axis")
+                .attr("transform", "translate(0," + (height - margin.bottom) + ")")
+                .call(d3.axisBottom(x).tickSize(-520).ticks(5)
+                    .tickFormat(d3.timeFormat("%b")))
+                .call(g => {
+                    var years = x.ticks(d3.timeYear.every(1))
+                    var xshift = 0
+                    g.selectAll("text")
+                        .style("text-anchor", "right")
+                        .attr("y", 15)
+                        .attr('fill', 'black')
+                        .attr('font-size', 20)
+                        .attr('font-weight', 800)
+                    g.selectAll("line")
+                        .attr("opacity", .2)
+                        .attr("stroke", "grey")
+
+
+                    g.select(".domain")
+                        .attr("opacity", 0)
+
+
+                })
+
+            time.append("line")
+                .attr("x1", x(new Date(2020, 10, 3)))
+                .attr("x2", x(new Date(2020, 10, 3)))
+                .attr("y1", 20)
+                .attr("y2", (height - margin.bottom))
+                .attr("stroke", "black")
+                .attr("stroke-width", 3)
+
+            time.append("text")
+                .text("Nov. 3rd")
+                .attr("x", x(new Date(2020, 10, 3)))
+                .attr("y", 10)
+                .attr("font-weight", "500")
+                .attr("font-size", 20)
+
+
+
+            time.append("g")
+                .attr("class", "y-axis")
+                .attr("transform", "translate(" + margin.left + ",0)");
+
+            var focus = time.append("g")
+                .attr("class", "focus")
+                .style("display", "none");
+
+            focus.append("line").attr("class", "lineHover")
+                .style("stroke", "#999")
+                .attr("stroke-width", 1)
+                .style("shape-rendering", "crispEdges")
+                .style("opacity", 0)
+                .attr("y1", -height)
+                .attr("y2", -40);
+
+            focus.append("text").attr("class", "lineHoverDate")
+                .attr("text-anchor", "middle")
+                .attr("font-size", 12);
+
+            var overlay = time.append("rect")
+                .attr("class", "overlay")
+                .attr("x", margin.left)
+                .attr("width", x(dp(dates[dates.length-1])) - margin.left)
+                .attr("height", height)
+
+            var keys = ["gopavg", "demavg"]
+            update("avg", 0);
+
+
+            function update(input, speed) {
+
+                var copy = keys.filter(f => f.includes(input))
+                var cities = copy.map(function (id) {
+                    return {
+                        id: id,
+                        values: line_data.map(d => { return { date: d.date, pct: +d[id] } })
+                    };
+                });
+                y.domain([
+                    25,
+                    75
+                ]).nice();
+
+                time.selectAll(".y-axis").transition()
+                    .duration(speed)
+                    .call(d3.axisLeft(y).tickSize(-width + margin.right + margin.left).ticks(5)).call(g => {
+                        var years = x.ticks(d3.timeYear.every(1))
+                        var xshift = 0
+                        g.selectAll("text")
+                            .style("text-anchor", "right")
+                            .attr("y", 0)
+                            .attr('fill', 'black')
+                            .attr('font-size', 20)
+                            .attr('font-weight', 500)
+                        g.selectAll("line")
+                            .attr("opacity", .2)
+                            .attr("stroke", "grey")
+
+
+                        g.select(".domain")
+                            .attr("opacity", 0)
+
+
+                    })
+
+                var city = time.selectAll(".cities")
+                    .data(cities);
+
+                city.exit().remove();
+
+                city.enter().insert("g", ".focus").append("path")
+                    .attr("class", "line cities")
+                    .style("stroke", (d, i) => colors[i])
+                    .style("stroke-width", 4)
+                    .style("opacity", .9)
+                    .style("stroke-linecap", "round")
+                    .attr("stroke-linejoin", "round")
+                    .merge(city)
+                    .transition().duration(speed)
+                    .attr("d", d => line(d.values))
+
+
+
+
+
+                tooltip(copy);
+
+                function tooltip(copy) {
+                    var rect = focus.selectAll(".lineHoverRect")
+                        .data(copy)
+
+                    var labels2 = focus.selectAll(".lineHoverText2")
+                        .data(copy)
+
+                    labels2.enter().append("text")
+                        .attr("class", "lineHoverText2")
+                        .attr("font-size", 25)
+                        .style("fill", "white")
+                        .style("stroke", "white")
+                        .style("stroke-width", 5)
+                        .merge(labels2)
+
+                    var labels = focus.selectAll(".lineHoverText")
+                        .data(copy)
+
+                    labels.enter().append("text")
+                        .attr("class", "lineHoverText")
+                        .attr("text-anchor", "middle")
+                        .attr("font-size", 25)
+                        .merge(labels)
+
+                    var circles = focus.selectAll(".hoverCircle")
+                        .data(copy)
+
+                    circles.enter().append("circle")
+                        .attr("class", "hoverCircle")
+                        .style("stroke", d => z(d))
+                        .style("stroke-width", 3)
+                        .style("fill", "white")
+                        .attr("r", 3)
+                        .merge(circles);
+
+                    time.selectAll(".overlay")
+                        .on("mouseover", () => focus.style("display", null))
+                        .on("mouseout", () => focus.style("display", "none"))
+                        .on("mousemove", mousemove);
+
+                    function mousemove() {
+
+                        var x0 = x.invert(d3.mouse(this)[0]),
+                            i = bisectDate(line_data, x0, 1),
+                            d0 = line_data[i - 1],
+                            d1 = line_data[i],
+                            d = x0 - d0.date > d1.date - x0 ? d1 : d0;
+
+                        focus.select(".lineHoverDate")
+                            .attr("x", x(d.date))
+                            .attr("y", 0)
+                            .attr("text-anchor", "middle")
+                            .style("font-size", 15)
+                            .attr("font-weight", "500")
+                            .text(formatDate(d.date));
+
+                        focus.selectAll(".hoverCircle")
+                            .attr("cy", e => y(d[e]))
+                            .attr("cx", x(d.date));
+
+                        focus.selectAll(".lineHoverText2")
+                            .attr("font-weight", "500")
+                            .attr("x", x(d.date) + 10)
+                            .text((e, i) => i == 1 ? ("Biden " + onevalue(d[e]) + "%") : i == 0 ? "Trump " + onevalue(d[e]) + "%" : "Third " + onevalue(d[e]) + "%")
+                            .attr("y", e => d[e] == d["gop" + input] ? y(d["gop" + input]) > y(d["dem" + input]) ? y(d["gop" + input]) + 15 : y(d["gop" + input]) - 15 : d[e] == d["dem" + input] ? y(d["dem" + input]) > y(d["gop" + input]) ? y(d["dem" + input]) + 15 : y(d["dem" + input]) - 15 : y(d[e]) - 15)
+                            .attr("text-anchor", (e, i) => i == 2 ? "end" : "start")
+                            .attr("dominant-baseline", "middle")
+
+                        focus.selectAll(".lineHoverText")
+                            .attr("font-weight", "500")
+                            .attr("x", x(d.date) + 10)
+                            .text((e, i) => input == "ev" ? i == 1 ? ("Biden " + onevalue(d[e])) : i == 0 ? "Trump " + onevalue(d[e]) : "Third " + onevalue(d[e]) : i == 1 ? ("Biden " + onevalue(d[e]) + "%") : i == 0 ? "Trump " + onevalue(d[e]) + "%" : "Third " + onevalue(d[e]) + "%")
+                            .attr("fill", (e, i) => colors[i])
+                            .attr("y", e => d[e] == d["gop" + input] ? y(d["gop" + input]) > y(d["dem" + input]) ? y(d["gop" + input]) + 15 : y(d["gop" + input]) - 15 : d[e] == d["dem" + input] ? y(d["dem" + input]) > y(d["gop" + input]) ? y(d["dem" + input]) + 15 : y(d["dem" + input]) - 15 : y(d[e]) - 15)
+                            .attr("text-anchor", (e, i) => i == 2 ? "end" : "start")
+                            .attr("dominant-baseline", "middle")
+                    }
+                }
+                
+            }
+        }
+        var states = d3.select("#state-search")
+        .on("change", function () {
+            bottom(this.value);
+        })
     })
 })
