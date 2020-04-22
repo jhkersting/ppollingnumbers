@@ -24,7 +24,7 @@ var bars_info = [{ "state": "Alabama", "abbrev": "AL", "radius": 16.43, "x": 413
 
 var map = d3.select("#usmap")
     .append("svg")
-    .attr("viewBox", '75 -50 900 550');
+    .attr("viewBox", '75 40 900 450');
 
 var projection = d3.geoAlbersUsa()
     .translate([widthmap / 2, heightmap / 2])
