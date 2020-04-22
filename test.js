@@ -312,6 +312,7 @@ d3.csv("https://data.jhkforecasts.com/pollster-ratings.csv", pollster_ratings =>
             update("Biden");
             function update(input) {
                 var state = state_data.filter(d => d.candidate == input)
+                console.log(state)
                 var national = national_data.filter(d => d.candidate == input)
                 console.log(national)
                 d3.json("https://projects.jhkforecasts.com/presidential_forecast/us-states.json", function (json) {
@@ -323,6 +324,7 @@ d3.csv("https://data.jhkforecasts.com/pollster-ratings.csv", pollster_ratings =>
                         var dataState = state[i].state;
                         var gop_win = state[i].gop_win;
                         var dem_win = state[i].dem_win;
+                        var margin = state[i].margin;
                         var ev = state[i].electoralvotes;
 
 
@@ -333,7 +335,7 @@ d3.csv("https://data.jhkforecasts.com/pollster-ratings.csv", pollster_ratings =>
                                 json.features[j].properties.gop_win = gop_win
                                 json.features[j].properties.dem_win = dem_win
                                 json.features[j].properties.ev = ev
-
+                                json.features[j].properties.margin = margin
 
                                 break;
                             }
@@ -383,14 +385,7 @@ d3.csv("https://data.jhkforecasts.com/pollster-ratings.csv", pollster_ratings =>
 
 
 
-                    svg.append("text")
-                        .text("Win Presidency")
-                        .attr("y", -120)
-                        .attr("x", 510)
-                        .attr("fill", "Black")
-                        .style("font-weight", "600")
-                        .style("font-size", 30)
-                        .attr("text-anchor", "middle")
+
 
                     svg.append("text")
                         .text(national[0].gop_ev)
@@ -498,36 +493,23 @@ d3.csv("https://data.jhkforecasts.com/pollster-ratings.csv", pollster_ratings =>
 
 
                             tipSVG.append("image")
-                                .attr("xlink:href", d => "https://jhkforecasts.com/Trump-01.png")
-                                .attr("x", 90)
+                                .attr("xlink:href", d.properties.margin > 0 ? "https://jhkforecasts.com/Biden-01.png" : "https://jhkforecasts.com/Trump-01.png")
+                                .attr("x", 50)
                                 .attr("y", 50)
-                                .attr("width", 82)
-                                .attr("height", 82)
+                                .attr("width", 75)
+                                .attr("height", 75)
 
-                            tipSVG.append("image")
-                                .attr("xlink:href", d => "https://jhkforecasts.com/" + input + "-01.png")
-                                .attr("x", 5.5)
-                                .attr("y", 50)
-                                .attr("width", 82)
-                                .attr("height", 82)
 
                             tipSVG.append("text")
-                                .text(numberformat(d.properties.gop_win))
+                                .text(d.properties.margin > 0 ?"Trump +"+numberformat(d.properties.margin):"Biden +"+numberformat(-d.properties.margin))
                                 .attr("y", 150)
-                                .attr("x", 131.25)
-                                .attr("fill", color(100))
+                                .attr("x", 87.5)
+                                .attr("fill",d.properties.margin > 0 ?color(0): color(100))
                                 .style("font-weight", "600")
                                 .style("font-size", 20)
                                 .attr("text-anchor", "middle")
 
-                            tipSVG.append("text")
-                                .text(numberformat(d.properties.dem_win))
-                                .attr("y", 150)
-                                .attr("x", 43.75)
-                                .attr("fill", color(0))
-                                .style("font-weight", "600")
-                                .style("font-size", 20)
-                                .attr("text-anchor", "middle")
+
                         })
                         .on('mouseout',
                             function (d) {
@@ -647,9 +629,9 @@ d3.csv("https://data.jhkforecasts.com/pollster-ratings.csv", pollster_ratings =>
                 .data(national_data)
                 .enter()
                 .append("text")
-                .text(d => d.candidate)
-                .attr("y", (d, i) => 10)
-                .attr("x", (d, i) => 400 + i * 400)
+                .text("Biden")
+                .attr("y", (d, i) => 50s)
+                .attr("x", (d, i) => 400)
                 .attr("fill", "black")
                 .style("font-weight", "600")
                 .style("font-size", 20)
@@ -683,31 +665,7 @@ d3.csv("https://data.jhkforecasts.com/pollster-ratings.csv", pollster_ratings =>
                 .attr("x1", 990)
                 .attr("y1", 80)
                 .attr("stroke", "black")
-
-            SVG.selectAll("cands")
-                .data(national_data)
-                .enter()
-                .append("text")
-                .text(d => numberFormat(d.dem_win))
-                .attr("y", (d, i) => 40)
-                .attr("x", (d, i) => 400 + i * 400)
-                .attr("fill", "black")
-                .style("font-weight", "600")
-                .style("font-size", 20)
-                .attr("text-anchor", "middle")
-                .attr("dominant-baseline", "middle")
-            SVG.selectAll("cands")
-                .data(national_data)
-                .enter()
-                .append("text")
-                .text(d => d.dem_ev)
-                .attr("y", (d, i) => 70)
-                .attr("x", (d, i) => 400 + i * 400)
-                .attr("fill", d => d.dem_ev > 269 ? "black" : "lightgrey")
-                .style("font-weight", "600")
-                .style("font-size", 20)
-                .attr("text-anchor", "middle")
-                .attr("dominant-baseline", "middle")
+            
 
             SVG.selectAll("states")
                 .data(tossupstates)
@@ -719,18 +677,6 @@ d3.csv("https://data.jhkforecasts.com/pollster-ratings.csv", pollster_ratings =>
                 .attr("width", 300)
                 .attr("fill", d => color(1 - d.Biden))
 
-
-
-
-            SVG.selectAll("states")
-                .data(tossupstates)
-                .enter()
-                .append("rect")
-                .attr("y", (d, i) => 85 + i * 30)
-                .attr("x", 650)
-                .attr("height", 25)
-                .attr("width", 300)
-                .attr("fill", d => color(1 - d.Sanders))
 
 
 
@@ -777,18 +723,7 @@ d3.csv("https://data.jhkforecasts.com/pollster-ratings.csv", pollster_ratings =>
 
 
 
-            SVG.selectAll("states")
-                .data(tossupstates)
-                .enter()
-                .append("text")
-                .text(d => numberFormat(d.Sanders))
-                .attr("y", (d, i) => 100 + i * 30)
-                .attr("x", 800)
-                .attr("fill", "black")
-                .style("font-weight", "600")
-                .style("font-size", 20)
-                .attr("dominant-baseline", "middle")
-                .attr("text-anchor", "middle")
+           
 
 
 
@@ -1131,9 +1066,9 @@ d3.csv("https://data.jhkforecasts.com/pollster-ratings.csv", pollster_ratings =>
                     .on("change", function () {
                         t(this.value, candidate);
                     })
-                
+
             }
-           
+
 
         })
     })
