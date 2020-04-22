@@ -630,7 +630,7 @@ d3.csv("https://data.jhkforecasts.com/pollster-ratings.csv", pollster_ratings =>
                 .enter()
                 .append("text")
                 .text("Biden")
-                .attr("y", (d, i) => 50s)
+                .attr("y", (d, i) => 50)
                 .attr("x", (d, i) => 400)
                 .attr("fill", "black")
                 .style("font-weight", "600")
