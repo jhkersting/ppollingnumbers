@@ -156,13 +156,14 @@ d3.csv("https://data.jhkforecasts.com/pollster-ratings.csv", pollster_ratings =>
                 var data_filtered = data_new.filter(d => d.dem == candidates[c])
 
                 data_filtered.forEach((d, i) => {
+                    d.days_old = (new Date()-d.date)/time_scale
                     d.grade_value = pollster_grade_value[pollster_grade_letter.indexOf(d.grade)]
                     d.population_adj = d.population == "lv" ? 1.33 : d.population == "rv" ? 1 : .7
                     d.n_adjusted = d.n > 4000 ? Math.pow((d.n - 4000), .2) + 27 : Math.pow(d.n, .4)
                     d.weight = d.n_adjusted * d.population_adj
                     d.sum = (d.dem_pct + d.gop_pct)
                     d.weight = Math.pow(d.weight, d.grade_value) * ((d.dem_pct + d.gop_pct) / 100)
-                    d.time_weight = d.weight / (1 + (((new Date() - d.date) / time_scale) / 50))
+                    d.time_weight = d.days_old > 85?.02:(0.0000021 * Math.pow(d.days_old,3) - 0.0003 * Math.pow(d.days_old,2) - 0.0012 * d.days_old +1) * d.weight
                     d.dem_adj = d.dem_pct
                     d.gop_adj = d.gop_pct
                     d.margin = d.dem_adj - d.gop_adj
@@ -227,9 +228,9 @@ d3.csv("https://data.jhkforecasts.com/pollster-ratings.csv", pollster_ratings =>
                 for (var i = 0; i < polling_avg.length; i++) {
 
                     var fundamental_margin = (-polling_avg[i].pvi / 100) + us_polling_avg
-                    var fund_margin_weight = fundamental_margin * 20
+                    var fund_margin_weight = fundamental_margin * 0.0001
                     var polling_margin_weight = polling_avg[i].polling_margin * polling_avg[i].polling_weight
-                    var margin = (polling_margin_weight + fund_margin_weight) / (polling_avg[i].polling_weight + 20)
+                    var margin = (polling_margin_weight + fund_margin_weight) / (polling_avg[i].polling_weight + 0.0001)
                     var sim_stdev = Math.sqrt((Math.pow(polling_avg[i].stdev, 2) * 2))
                     var third_party = pvi[i].thirdparty * national_third_party
                     var gop = ((1 - third_party) / 2) - (margin / 2)
