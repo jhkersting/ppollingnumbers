@@ -1164,10 +1164,10 @@ d3.csv("https://data.jhkforecasts.com/pollster-ratings.csv", pollster_ratings =>
                     .append("text")
                     .text(d => timeformat(d.date))
                     .attr("y", (d, i) => 62.5 + i * 75)
-                    .attr("x", (d, i) => 425)
+                    .attr("x", (d, i) => 450)
                     .attr("fill", "grey")
                     .style("font-weight", "500")
-                    .style("font-size", 20)
+                    .style("font-size", 15)
                     .attr("text-anchor", "start")
                     .attr("dominant-baseline", "central")
 
