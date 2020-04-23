@@ -345,14 +345,14 @@ d3.csv("https://data.jhkforecasts.com/pollster-ratings.csv", pollster_ratings =>
                     svg.append("image")
                         .attr("xlink:href", d => "https://jhkforecasts.com/Trump-01.png")
                         .attr("x", 810)
-                        .attr("y", -100)
+                        .attr("y", -80)
                         .attr("width", 100)
                         .attr("height", 100)
 
                     svg.append("image")
                         .attr("xlink:href", d => "https://jhkforecasts.com/" + "Biden" + "-01.png")
                         .attr("x", 110)
-                        .attr("y", -100)
+                        .attr("y", -80)
                         .attr("width", 100)
                         .attr("height", 100)
 
@@ -360,7 +360,7 @@ d3.csv("https://data.jhkforecasts.com/pollster-ratings.csv", pollster_ratings =>
 
                     svg.append("text")
                         .text(national[0].gop_ev)
-                        .attr("y", -40)
+                        .attr("y", -20)
                         .attr("x", 800)
                         .attr("fill", gopwincol)
                         .style("font-weight", "500")
@@ -369,7 +369,7 @@ d3.csv("https://data.jhkforecasts.com/pollster-ratings.csv", pollster_ratings =>
 
                     svg.append("text")
                         .text("Electoral Votes")
-                        .attr("y", -80)
+                        .attr("y", -60)
                         .attr("x", 800)
                         .attr("fill", "Black")
                         .style("font-weight", "500")
@@ -378,7 +378,7 @@ d3.csv("https://data.jhkforecasts.com/pollster-ratings.csv", pollster_ratings =>
 
                     svg.append("text")
                         .text(national[0].dem_ev)
-                        .attr("y", -40)
+                        .attr("y", -20)
                         .attr("x", 215)
                         .attr("fill", demwincol)
                         .style("font-weight", "500")
@@ -387,7 +387,7 @@ d3.csv("https://data.jhkforecasts.com/pollster-ratings.csv", pollster_ratings =>
 
                     svg.append("text")
                         .text("Electoral Votes")
-                        .attr("y", -80)
+                        .attr("y", -60)
                         .attr("x", 215)
                         .attr("fill", "Black")
                         .style("font-weight", "500")
@@ -620,8 +620,8 @@ d3.csv("https://data.jhkforecasts.com/pollster-ratings.csv", pollster_ratings =>
 
             SVG.append("line")
                 .attr("y2", 80)
-                .attr("x1", 10)
-                .attr("x1", 990)
+                .attr("x1", 100)
+                .attr("x2", 900)
                 .attr("y1", 80)
                 .attr("stroke", "black")
 
@@ -630,7 +630,7 @@ d3.csv("https://data.jhkforecasts.com/pollster-ratings.csv", pollster_ratings =>
                 .data(tossupstates)
                 .enter()
                 .append("rect")
-                .attr("y", (d, i) => 85 + i * 30)
+                .attr("y", (d, i) => 87.5 + i * 30)
                 .attr("x", 600)
                 .attr("height", 25)
                 .attr("width", 300)

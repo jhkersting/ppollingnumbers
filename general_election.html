@@ -37,6 +37,21 @@
         #tipDiv {
             display: inline;
         }
+
+        @media only screen and (max-width:600px) {
+            #usmap{
+                width:100%;
+                margin-left:0%;
+            }
+        }
+
+        @media only screen and (min-width:601px) {
+            #usmap{
+                width:80%;
+                margin-left:10%;
+            }
+        }
+       
     </style>
 
 <body>
@@ -137,10 +152,11 @@
     <h1 style="text-align: center;font-size: 5vw;font-weight: 900;background-color: #3E5AA9;color: white;">
         Trump v. Biden</h1>
     <a href="https://twitter.com/jhkersting">
-        <h2 style="font-weight: 700;text-decoration: underline;">Created By : Jack Kersting</h2>
+        <h2 style="font-weight: 700;text-decoration: underline;font-size: 2vw;">Created By : Jack Kersting</h2>
     </a>
-
-
+    <p style="text-indent: 20px;margin: 10px;"> The data created below is calculated from the 538 polling database. The
+        polling average are calculated by combining the national polling and pvi with state polling averages. States
+        with more polling however don't weigh the national vote. This is purely a polling average. </p>
 
     <div style="margin-top: 10px" id="usmap"></div>
 
@@ -154,8 +170,8 @@
             (adsbygoogle = window.adsbygoogle || []).push({});
         </script>
     </div>
-    <h1 style="font-size: 4vw;text-align: left;font-weight: 700;margin-left:2%">Polls</h1>
-    <p style="text-align: left;margin-left:5%">click box at end to filter by pollster</p>
+    <h1 style="font-size: 3vw;text-align: left;font-weight: 700;margin-left:2%">Polls</h1>
+    <p style="font-size: 1.5vw;text-align: left;margin-left:5%">click box at end to filter by pollster</p>
     <div id="polls">
         <div style="text-align: center;">
             <h1 style="font-size: 2vw;text-align: center;">Select State</h1>
@@ -217,13 +233,9 @@
         </div>
     </div>
     <div id="top"></div>
-    <div class="computer" style="margin-top: 20px;width: 100%;margin-left: 0%;" id="bottom"></div>
+    <div class="computer" style="margin-top: 20px;" id="bottom"></div>
     <div class="phone" style="margin-top: 20px" id="bottomPhone"></div>
-    <p style="text-indent: 20px;margin: 10px;"> The data created below is calculated from the 538 polling database. The
-        polling average are calculated by combining the national polling and pvi with state polling averages. States
-        with more polling however don't weigh the national vote as much. This is more of a NowCast projection, as if the
-        election was today, compared to the forecast which accounts for the uncertaintity due to the distance from the
-        election. Another difference is the forecast uses other factors besides polling. </p>
+
     <script src="test.js"></script>
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
     <ins class="adsbygoogle" style="display:block" data-ad-format="fluid" data-ad-layout-key="-h2+d+5c-9-3e"
