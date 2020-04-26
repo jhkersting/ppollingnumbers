@@ -1,5 +1,6 @@
 var candidates = ["Biden"]
 var timeparse = d3.timeParse("%m/%d/%y")
+var cp = d3.timeParse("%m/%d/%y %H:%M")
 var time_scale = 86400000
 var national_third_party = .03
 var simulations = 1
@@ -142,7 +143,8 @@ d3.csv("https://data.jhkforecasts.com/pollster-ratings.csv", pollster_ratings =>
                     dem_pct: +datanew[i][0].pct,
                     gop_pct: +datanew[i][1].pct,
                     poll_index: datanew[i][0].state == "" ? "US" + datanew[i][0].pollster : datanew[i][0].state + datanew[i][0].pollster,
-                    margin: +datanew[i][0].pct - +datanew[i][1].pct
+                    margin: +datanew[i][0].pct - +datanew[i][1].pct,
+                    created_at: cp(datanew[i][0].created_at)
                 }
             })
             var data_new = data_new.filter(d => d.dem == "Biden" || d.dem == "Sanders")
@@ -711,7 +713,7 @@ d3.csv("https://data.jhkforecasts.com/pollster-ratings.csv", pollster_ratings =>
                 finaldata.forEach((d, i) => {
                     d.index = d.pollster + d.state + d.population
                 })
-
+                finaldata.sort((a, b) => b.created_at - a.created_at)
 
                 var statedata = [
                     state == "All" ? 0 : Biden.filter(d => d.state == state)[0].margin,
