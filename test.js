@@ -86,13 +86,13 @@ d3.csv("https://data.jhkforecasts.com/pollster-ratings.csv", pollster_ratings =>
         return d.Value
     })
 
-    d3.csv("https://projects.jhkforecasts.com/presidential_forecast/partisanlean.csv", pvi => {
+    d3.csv("https://data.jhkforecasts.com/2020-pres-input.csv", pvi => {
         var pvi = pvi.map((d, i) => {
             return {
                 state: d.state,
-                pvi: d.pvi,
+                pvi: +d.pvi,
                 thirdparty: +d.thirdparty,
-                electoralvotes: +d.electroralvotes
+                electoralvotes: +d.ev
             }
         })
         pvi[38].thirdparty = 1
@@ -316,7 +316,7 @@ d3.csv("https://data.jhkforecasts.com/pollster-ratings.csv", pollster_ratings =>
                 console.log(state)
                 var national = national_data.filter(d => d.candidate == input)
                 console.log(national)
-                d3.json("https://projects.jhkforecasts.com/presidential_forecast/us-states.json", function (json) {
+                d3.json("https://projects.jhkforecasts.com/presidential-forecast/us-states.json", function (json) {
 
 
                     for (var i = 0; i < state.length; i++) {
@@ -507,59 +507,59 @@ d3.csv("https://data.jhkforecasts.com/pollster-ratings.csv", pollster_ratings =>
                 },
                 {
                     "state": "Florida",
-                    "index": 8
+                    "index":9
                 },
                 {
                     "state": "Georgia",
-                    "index": 9
+                    "index": 10
                 },
                 {
                     "state": "Iowa",
-                    "index": 14
+                    "index": 15
                 },
                 {
                     "state": "Maine",
-                    "index": 18
+                    "index": 19
                 },
                 {
                     "state": "Michigan",
-                    "index": 21
-                },
-                {
-                    "state": "Minnesota",
                     "index": 22
                 },
                 {
-                    "state": "Nevada",
-                    "index": 27
+                    "state": "Minnesota",
+                    "index": 23
                 },
                 {
-                    "state": "New Hampshire",
+                    "state": "Nevada",
                     "index": 28
                 },
                 {
+                    "state": "New Hampshire",
+                    "index": 29
+                },
+                {
                     "state": "North Carolina",
-                    "index": 32
+                    "index": 33
                 },
                 {
                     "state": "Ohio",
-                    "index": 34
+                    "index": 35
                 },
                 {
                     "state": "Pennsylvania",
-                    "index": 37
+                    "index": 38
                 },
                 {
                     "state": "Texas",
-                    "index": 42
+                    "index": 43
                 },
                 {
                     "state": "Virginia",
-                    "index": 45
+                    "index": 44
                 },
                 {
                     "state": "Wisconsin",
-                    "index": 48
+                    "index": 49
                 },
                 {
                     "state": "Maine-2",
@@ -570,11 +570,11 @@ d3.csv("https://data.jhkforecasts.com/pollster-ratings.csv", pollster_ratings =>
                     "index": 54
                 }
             ]
-
+            console.log(state_data)
             tossupstates.forEach((d, j) => {
                 d.electoralvotes = Biden[d.index].electoralvotes
                 d.pvi = pvi[d.index].pvi
-                d.Biden = Biden[d.index].margin * 100
+                d.Biden = state_data[d.index].margin * 100
                 return d;
             })
 
