@@ -555,7 +555,7 @@ d3.csv("https://data.jhkforecasts.com/pollster-ratings.csv", pollster_ratings =>
                 },
                 {
                     "state": "Virginia",
-                    "index": 44
+                    "index": 46
                 },
                 {
                     "state": "Wisconsin",
