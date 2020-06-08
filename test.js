@@ -5,7 +5,7 @@ var time_scale = 86400000
 var national_third_party = .03
 var simulations = 1
 var timeformat = d3.timeFormat("%m/%d")
-var wholeformat = d3.format(".1f")
+var wf = d3.format(".0f")
 var map_labels = [{ "state": "Alabama", "label": "AL", "xValue": 637, "yValue": 338.6934 }, { "state": "Alaska", "label": "AK", "xValue": 245, "yValue": 400 }, { "state": "Arizona", "label": "AZ", "xValue": 315, "yValue": 306.5801 }, { "state": "Arkansas", "label": "AR", "xValue": 560, "yValue": 315.6387 }, { "state": "California", "label": "CA", "xValue": 223, "yValue": 253.9219 }, { "state": "Colorado", "label": "CO", "xValue": 400, "yValue": 245.5645 }, { "state": "Connecticut", "label": "CT", "xValue": -1000, "yValue": -1000 }, { "state": "Delaware", "label": "DE", "xValue": -1000, "yValue": -1000 }, { "state": "District of Columbia", "label": "DC", "xValue": -1000, "yValue": -1000 }, { "state": "Florida", "label": "FL", "xValue": 714, "yValue": 397.8154 }, { "state": "Georgia", "label": "GA", "xValue": 680.0117, "yValue": 335.2354 }, { "state": "Hawaii", "label": "HI", "xValue": 380, "yValue": 465 }, { "state": "Idaho", "label": "ID", "xValue": 310.1851, "yValue": 155 }, { "state": "Illinois", "label": "IL", "xValue": 596.6602, "yValue": 231.2954 }, { "state": "Indiana", "label": "IN", "xValue": 633.4111, "yValue": 228.4214 }, { "state": "Iowa", "label": "IA", "xValue": 545.8457, "yValue": 202.6782 }, { "state": "Kansas", "label": "KS", "xValue": 487, "yValue": 259.1592 }, { "state": "Kentucky", "label": "KY", "xValue": 655.1484, "yValue": 264.9658 }, { "state": "Louisiana", "label": "LA", "xValue": 561.4404, "yValue": 369.8135 }, { "state": "Maine", "label": "ME", "xValue": 807.3105, "yValue": 109.855 }, { "state": "Maryland", "label": "MD", "xValue": -1000, "yValue": -1000 }, { "state": "Massachusetts", "label": "MA", "xValue": -1000, "yValue": -1000 }, { "state": "Michigan", "label": "MI", "xValue": 645.6465, "yValue": 181.3647 }, { "state": "Minnesota", "label": "MN", "xValue": 530.8594, "yValue": 141.5874 }, { "state": "Mississippi", "label": "MS", "xValue": 598.6016, "yValue": 342.1514 }, { "state": "Missouri", "label": "MO", "xValue": 557, "yValue": 261.123 }, { "state": "Montana", "label": "MT", "xValue": 370.0981, "yValue": 112.7705 }, { "state": "Nebraska", "label": "NE", "xValue": 473.8364, "yValue": 210.0527 }, { "state": "Nevada", "label": "NV", "xValue": 267.8765, "yValue": 219.0957 }, { "state": "New Hampshire", "label": "NH", "xValue": -1000, "yValue": -1000 }, { "state": "New Jersey", "label": "NJ", "xValue": 785, "yValue": 210 }, { "state": "New Mexico", "label": "NM", "xValue": 385.3774, "yValue": 314.1035 }, { "state": "New York", "label": "NY", "xValue": 753.5781, "yValue": 163.2588 }, { "state": "North Carolina", "label": "NC", "xValue": 728.6084, "yValue": 284.5029 }, { "state": "North Dakota", "label": "ND", "xValue": 467.0742, "yValue": 117.3823 }, { "state": "Ohio", "label": "OH", "xValue": 670.7197, "yValue": 219.4883 }, { "state": "Oklahoma", "label": "OK", "xValue": 500.1963, "yValue": 306.418 }, { "state": "Oregon", "label": "OR", "xValue": 240.2783, "yValue": 139.5654 }, { "state": "Pennsylvania", "label": "PA", "xValue": 730.3535, "yValue": 200.856 }, { "state": "Rhode Island", "label": "RI", "xValue": -1000, "yValue": -1000 }, { "state": "South Carolina", "label": "SC", "xValue": 712.4395, "yValue": 315.6387 }, { "state": "South Dakota", "label": "SD", "xValue": 468.0742, "yValue": 163.5166 }, { "state": "Tennessee", "label": "TN", "xValue": 640.8594, "yValue": 294.8193 }, { "state": "Texas", "label": "TX", "xValue": 480.9902, "yValue": 374.2861 }, { "state": "Utah", "label": "UT", "xValue": 330.1084, "yValue": 234.978 }, { "state": "Vermont", "label": "VT", "xValue": -1000, "yValue": -1000 }, { "state": "Virginia", "label": "VA", "xValue": 731.0264, "yValue": 252.7842 }, { "state": "Washington", "label": "WA", "xValue": 256.9365, "yValue": 88.0762 }, { "state": "West Virginia", "label": "WV", "xValue": 701, "yValue": 243 }, { "state": "Wisconsin", "label": "WI", "xValue": 585.2529, "yValue": 163.2588 }, { "state": "Wyoming", "label": "WY", "xValue": 385.9287, "yValue": 179.6255 }, { "state": "US", "label": "US", "xValue": -1000, "yValue": -100 }, { "state": "Nebraska CD-2", "label": "NE-2", "xValue": -1000, "yValue": -100 }]
 var color = d3.scaleLinear()
     .domain([-100, -20, 0, 20, 100])
@@ -50,8 +50,8 @@ d3.csv("https://data.jhkforecasts.com/pollster-ratings.csv", pollster_ratings =>
         .html("<div id='tipDiv'></div>");
 
     svg.call(tool_tip);
-    var pollster_names = pollster_ratings.map((d, i) => {
-        return d.Pollster
+    var pollsterID = pollster_ratings.map((d, i) => {
+        return +d.PollsterRatingID
     })
 
     var pollster_grade = pollster_ratings.map((d, i) => {
@@ -61,14 +61,14 @@ d3.csv("https://data.jhkforecasts.com/pollster-ratings.csv", pollster_ratings =>
         return d.MeanRevertedBias == NaN ? 0 : d.MeanRevertedBias
     })
     var grade_scale = [
-        { Grade: "A+", Value: 1.2 },
-        { Grade: "A", Value: 1.15 },
-        { Grade: "A-", Value: 1.1 },
-        { Grade: "A/B", Value: 1.05 },
-        { Grade: "B+", Value: 1 },
-        { Grade: "B", Value: .95 },
-        { Grade: "B-", Value: .9 },
-        { Grade: "B/C", Value: .875 },
+        { Grade: "A+", Value: 1.5 },
+        { Grade: "A", Value: 1.4 },
+        { Grade: "A-", Value: 1.3 },
+        { Grade: "A/B", Value: 1.2 },
+        { Grade: "B+", Value: 1.1 },
+        { Grade: "B", Value: 1 },
+        { Grade: "B-", Value: .95 },
+        { Grade: "B/C", Value: .9 },
         { Grade: "C+", Value: .85 },
         { Grade: "C", Value: .8 },
         { Grade: "C-", Value: .7 },
@@ -108,7 +108,7 @@ d3.csv("https://data.jhkforecasts.com/pollster-ratings.csv", pollster_ratings =>
         d3.csv("https://projects.fivethirtyeight.com/polls-page/president_polls.csv", data => {
             var data = data.filter(d => d.answer != "Schultz")
             var data = data.filter(d => d.candidate_party != "LIB")
-
+            console.log(data)
             data.forEach((d, i) => {
                 d.party_id = d.candidate_party == "DEM" ? 0 : 1
                 return d;
@@ -123,21 +123,20 @@ d3.csv("https://data.jhkforecasts.com/pollster-ratings.csv", pollster_ratings =>
             var datanew = datanew.map((d, i) => {
                 return d.values
             })
-
             var data_new = datanew.map((d, i) => {
                 return {
                     question_id: +datanew[i][0].question_id,
                     poll_id: +datanew[i][0].poll_id,
                     state: datanew[i][0].state == "" ? "US" : datanew[i][0].state,
                     pollster: datanew[i][0].pollster,
-                    id: +datanew[i][0].pollster_id,
+                    id: +datanew[i][0].pollster_rating_id,
                     url: datanew[i][0].url,
                     sponsors: datanew[i][0].sponsors,
                     n: datanew[i][0].sample_size,
                     date: timeparse(datanew[i][0].end_date),
                     population: datanew[i][0].population,
-                    grade: pollster_grade[pollster_names.indexOf(datanew[i][0].pollster)] == undefined ? "-" : pollster_grade[pollster_names.indexOf(datanew[i][0].pollster)],
-                    bias: pollster_bias[pollster_names.indexOf(datanew[i][0].pollster)] == undefined ? 0 : pollster_bias[pollster_names.indexOf(datanew[i][0].pollster)],
+                    grade: pollster_grade[pollsterID.indexOf(+datanew[i][0].pollster_rating_id)] == undefined ? "-" : pollster_grade[pollsterID.indexOf(+datanew[i][0].pollster_rating_id)],
+                    bias: +pollster_bias[pollsterID.indexOf(+datanew[i][0].pollster_rating_id)] == undefined ? 0 : pollster_bias[pollsterID.indexOf(+datanew[i][0].pollster_rating_id)],
                     dem: datanew[i][0].answer,
                     gop: datanew[i][1].answer,
                     dem_pct: +datanew[i][0].pct,
@@ -165,7 +164,7 @@ d3.csv("https://data.jhkforecasts.com/pollster-ratings.csv", pollster_ratings =>
                     d.weight = d.n_adjusted * d.population_adj
                     d.sum = (d.dem_pct + d.gop_pct)
                     d.weight = Math.pow(d.weight, d.grade_value) * ((d.dem_pct + d.gop_pct) / 100)
-                    d.time_weight = d.days_old > 57 ? d.weight / ((50 + d.days_old) / 50) : (0.0000021 * Math.pow(d.days_old, 3) - 0.0003 * Math.pow(d.days_old, 2) - 0.0012 * d.days_old + 1) * d.weight
+                    d.time_weight = ((30 + d.days_old) / 30)
                     d.dem_adj = d.dem_pct
                     d.gop_adj = d.gop_pct
                     d.margin = d.dem_adj - d.gop_adj
@@ -365,7 +364,7 @@ d3.csv("https://data.jhkforecasts.com/pollster-ratings.csv", pollster_ratings =>
                         .attr("y", -20)
                         .attr("x", 800)
                         .attr("fill", gopwincol)
-                        .style("font-weight", "500")
+                        .style("font-weight", "100")
                         .style("font-size", 30)
                         .attr("text-anchor", "end")
 
@@ -374,7 +373,7 @@ d3.csv("https://data.jhkforecasts.com/pollster-ratings.csv", pollster_ratings =>
                         .attr("y", -60)
                         .attr("x", 800)
                         .attr("fill", "Black")
-                        .style("font-weight", "500")
+                        .style("font-weight", "100")
                         .style("font-size", 30)
                         .attr("text-anchor", "end")
 
@@ -383,7 +382,7 @@ d3.csv("https://data.jhkforecasts.com/pollster-ratings.csv", pollster_ratings =>
                         .attr("y", -20)
                         .attr("x", 215)
                         .attr("fill", demwincol)
-                        .style("font-weight", "500")
+                        .style("font-weight", "100")
                         .style("font-size", 30)
                         .attr("text-anchor", "start")
 
@@ -392,7 +391,7 @@ d3.csv("https://data.jhkforecasts.com/pollster-ratings.csv", pollster_ratings =>
                         .attr("y", -60)
                         .attr("x", 215)
                         .attr("fill", "Black")
-                        .style("font-weight", "500")
+                        .style("font-weight", "100")
                         .style("font-size", 30)
                         .attr("text-anchor", "start")
 
@@ -417,7 +416,7 @@ d3.csv("https://data.jhkforecasts.com/pollster-ratings.csv", pollster_ratings =>
                         .attr("x", d => d.xValue)
                         .attr("y", d => d.yValue)
                         .style("font-family", "sf-mono")
-                        .style("font-weight", "500")
+                        .style("font-weight", "100")
                         .attr("font-size", 10)
                         .attr("fill", "black")
                         .attr("text-anchor", "middle")
@@ -456,7 +455,7 @@ d3.csv("https://data.jhkforecasts.com/pollster-ratings.csv", pollster_ratings =>
                                 .attr("y", 20)
                                 .attr("x", 87.5)
                                 .attr("fill", "#black")
-                                .style("font-weight", "500")
+                                .style("font-weight", "100")
                                 .style("font-size", "20")
                                 .attr("text-anchor", "middle")
                             tipSVG.append("text")
@@ -464,7 +463,7 @@ d3.csv("https://data.jhkforecasts.com/pollster-ratings.csv", pollster_ratings =>
                                 .attr("y", 40)
                                 .attr("x", 87.5)
                                 .attr("fill", "#black")
-                                .style("font-weight", "500")
+                                .style("font-weight", "100")
                                 .style("font-size", "15")
                                 .attr("text-anchor", "middle")
 
@@ -482,7 +481,7 @@ d3.csv("https://data.jhkforecasts.com/pollster-ratings.csv", pollster_ratings =>
                                 .attr("y", 150)
                                 .attr("x", 87.5)
                                 .attr("fill", d.properties.margin > 0 ? demwincol : gopwincol)
-                                .style("font-weight", "500")
+                                .style("font-weight", "100")
                                 .style("font-size", 20)
                                 .attr("text-anchor", "middle")
 
@@ -507,7 +506,7 @@ d3.csv("https://data.jhkforecasts.com/pollster-ratings.csv", pollster_ratings =>
                 },
                 {
                     "state": "Florida",
-                    "index":9
+                    "index": 9
                 },
                 {
                     "state": "Georgia",
@@ -594,7 +593,7 @@ d3.csv("https://data.jhkforecasts.com/pollster-ratings.csv", pollster_ratings =>
                 .attr("y", (d, i) => 65)
                 .attr("x", (d, i) => 750)
                 .attr("fill", "black")
-                .style("font-weight", "500")
+                .style("font-weight", "100")
                 .style("font-size", 20)
                 .attr("text-anchor", "middle")
                 .attr("dominant-baseline", "central")
@@ -605,7 +604,7 @@ d3.csv("https://data.jhkforecasts.com/pollster-ratings.csv", pollster_ratings =>
                 .attr("y", 65)
                 .attr("x", 500)
                 .attr("fill", "black")
-                .style("font-weight", "500")
+                .style("font-weight", "100")
                 .style("font-size", 20)
                 .attr("text-anchor", "middle")
                 .attr("dominant-baseline", "central")
@@ -615,7 +614,7 @@ d3.csv("https://data.jhkforecasts.com/pollster-ratings.csv", pollster_ratings =>
                 .attr("y", 65)
                 .attr("x", 100)
                 .attr("fill", "black")
-                .style("font-weight", "500")
+                .style("font-weight", "100")
                 .style("font-size", 20)
                 .attr("text-anchor", "start")
                 .attr("dominant-baseline", "central")
@@ -650,7 +649,7 @@ d3.csv("https://data.jhkforecasts.com/pollster-ratings.csv", pollster_ratings =>
                 .attr("y", (d, i) => 100 + i * 30)
                 .attr("x", 100)
                 .attr("fill", "black")
-                .style("font-weight", "500")
+                .style("font-weight", "100")
                 .style("font-size", 20)
                 .attr("text-anchor", "start")
 
@@ -664,7 +663,7 @@ d3.csv("https://data.jhkforecasts.com/pollster-ratings.csv", pollster_ratings =>
                 .attr("y", (d, i) => 100 + i * 30)
                 .attr("x", 500)
                 .attr("fill", "black")
-                .style("font-weight", "500")
+                .style("font-weight", "100")
                 .style("font-size", 20)
                 .attr("text-anchor", "middle")
                 .attr("dominant-baseline", "central")
@@ -677,7 +676,7 @@ d3.csv("https://data.jhkforecasts.com/pollster-ratings.csv", pollster_ratings =>
                 .attr("y", (d, i) => 100 + i * 30)
                 .attr("x", 750)
                 .attr("fill", "black")
-                .style("font-weight", "500")
+                .style("font-weight", "100")
                 .style("font-size", 20)
                 .attr("dominant-baseline", "central")
                 .attr("text-anchor", "middle")
@@ -688,25 +687,21 @@ d3.csv("https://data.jhkforecasts.com/pollster-ratings.csv", pollster_ratings =>
 
 
 
-            var bottom = d3.select("#bottom")
-                .append("svg")
-                .attr("viewBox", '0 -200 1000 610');
 
-            var bottomPhone = d3.select("#bottomPhone")
-                .append("svg")
-                .attr("viewBox", '0 -200 1000 610');
 
             var top = d3.select("#top")
                 .append("svg")
                 .attr("viewBox", '0 0 1000 100');
 
             document.getElementById("state-search").value = "All"
-
+            var gradeColor = d3.scaleLinear()
+                .domain([0.2, .85, 1.1, 1.5])
+                .range(["#F0474E", "#FCDD26", "#37B76E", "#2079FF"])
 
             t(d3.select('#state-search').property('value'), "Biden", "All");
             function t(state, candidate, pollster) {
                 var dataNew = data_new.filter(d => d.dem == "Biden")
-                var datanew = state == "All" ? dataNew.slice(0, 100) : dataNew.filter(d => d.state == state)
+                var datanew = state == "All" ? dataNew.slice(0, 200) : dataNew.filter(d => d.state == state)
                 var finaldata = candidate == "All" ? datanew : datanew.filter(d => d.dem == candidate)
                 var finaldata = pollster == "All" ? finaldata : finaldata.filter(d => d.pollster == pollster)
                 console.log(finaldata)
@@ -720,557 +715,231 @@ d3.csv("https://data.jhkforecasts.com/pollster-ratings.csv", pollster_ratings =>
                 ]
                 console.log(statedata)
                 document.getElementById("top").style.display = state == "All" ? "none" : "inline"
-                var height = finaldata.length * 40 + 45
-                var heightPhone = finaldata.length * 75 + 45
 
-                bottom.attr("viewBox", '0 -20 1000 ' + height)
-                bottomPhone.attr("viewBox", '0 -20 1000 ' + heightPhone)
 
-                bottom.append("rect")
-                    .attr("fill", "white")
-                    .attr("x", 0)
-                    .attr("y", 0)
-                    .attr("width", 1000)
-                    .attr("height", height)
-
-                bottom.selectAll("states")
-                    .data(finaldata)
-                    .enter()
-                    .append("rect")
-                    .attr("y", (d, i) => 25 + i * 40)
-                    .attr("x", 610)
-                    .attr("height", 75)
-                    .attr("width", 80)
-                    .attr("fill", d => demscale(d.dem_pct))
-
-                bottom.selectAll("states")
-                    .data(finaldata)
-                    .enter()
-                    .append("rect")
-                    .attr("y", (d, i) => 25 + i * 40)
-                    .attr("x", 710)
-                    .attr("height", 40)
-                    .attr("width", 80)
-                    .attr("fill", d => gopscale(d.gop_pct))
-
-                bottom.append("text")
-                    .text("BIDEN")
-                    .attr("y", 12)
-                    .attr("x", 650)
-                    .attr("fill", "black")
-                    .style("font-weight", "500")
-                    .style("font-size", 20)
-                    .attr("text-anchor", "middle")
-                    .attr("dominant-baseline", "central")
-                    .style("font-family", "sf-mono")
-
-
-                bottom.append("text")
-                    .text("TRUMP")
-                    .attr("y", 12)
-                    .attr("x", 750)
-                    .attr("fill", "black")
-                    .style("font-weight", "500")
-                    .style("font-size", 20)
-                    .attr("text-anchor", "middle")
-                    .attr("dominant-baseline", "central")
-                    .style("font-family", "sf-mono")
-
-
-                bottom.append("text")
-                    .text("FILTER")
-                    .attr("y", 15)
-                    .attr("x", 950)
-                    .attr("fill", "black")
-                    .style("font-weight", "500")
-                    .style("font-size", 15)
-                    .attr("text-anchor", "middle")
-                    .attr("dominant-baseline", "central")
-                    .style("font-family", "sf-mono")
-
-
-
-                bottom.append("text")
-                    .text("RESET")
-                    .attr("y", -10)
-                    .attr("x", 950)
-                    .attr("fill", "black")
-                    .style("font-weight", "500")
-                    .style("font-size", 15)
-                    .attr("text-anchor", "middle")
-                    .attr("dominant-baseline", "central")
-                    .on("mouseover", function (d) {
-                        d3.select(this)
-                            .attr("text-decoration", "underline")
-                    })
-                    .on("mouseout", function (d) {
-                        d3.select(this)
-                            .attr("text-decoration", "none")
-                    })
-                    .on("click", function (d) {
-
-                        t(state, "Biden", "All");
-
-                    })
-                    .style("font-family", "sf-mono")
-
-
-
-
-                bottom.selectAll("cands")
-                    .data(finaldata)
-                    .enter()
-                    .append("a")
-                    .attr("href", d => d.url)
-                    .append("text")
-                    .text(d => d.pollster)
-                    .attr("y", (d, i) => d.pollster.length > 30 ? 35 + i * 40 : 45 + i * 40)
-                    .attr("x", (d, i) => 50)
-                    .attr("fill", "black")
-                    .style("font-weight", "500")
-                    .style("font-size", 13)
-                    .attr("text-anchor", "start")
-                    .attr("dominant-baseline", "central")
-                    .on("mouseover", function (d) {
-                        d3.select(this)
-                            .attr("text-decoration", "underline")
-                    })
-                    .on("mouseout", function (d) {
-                        d3.select(this)
-                            .attr("text-decoration", "none")
-                    })
-                    .style("font-family", "sf-mono")
-                    .call(wrapComp, 250)
-
-
-                bottom.selectAll("cands")
-                    .data(finaldata)
-                    .enter()
-                    .append("rect")
-                    .attr("y", (d, i) => 32.5 + i * 40)
-                    .attr("x", 937.5)
-                    .attr("height", 25)
-                    .attr("width", 25)
-                    .attr("fill", "lightgray")
-                    .on("mouseover", function (d) {
-                        d3.select(this)
-                            .attr("fill", "gray")
-                    })
-                    .on("mouseout", function (d) {
-                        d3.select(this)
-                            .attr("fill", "lightgray")
-                    })
-                    .on("click", function (d) {
-
-                        t(state, "Biden", d.pollster);
-
-                    })
-
-
-                bottom.selectAll("cands")
-                    .data(finaldata)
-                    .enter()
-                    .append("text")
-                    .text(d => wf(d.dem_pct))
-                    .attr("y", (d, i) => 45 + i * 40)
-                    .attr("x", (d, i) => 650)
-                    .attr("fill", "black")
-                    .style("font-weight", "500")
-                    .style("font-size", 15)
-                    .attr("text-anchor", "middle")
-                    .attr("dominant-baseline", "central")
-
-                bottom.selectAll("cands")
-                    .data(finaldata)
-                    .enter()
-                    .append("text")
-                    .text(d => wf(d.gop_pct))
-                    .attr("y", (d, i) => 45 + i * 40)
-                    .attr("x", (d, i) => 750)
-                    .attr("fill", "black")
-                    .style("font-weight", "500")
-                    .style("font-size", 15)
-                    .attr("text-anchor", "middle")
-                    .attr("dominant-baseline", "central")
-
-
-                bottom.selectAll("cands")
-                    .data(finaldata)
-                    .enter()
-                    .append("text")
-                    .text(d => d.margin > 0 ? "D+" + wf(d.margin) : "R+" + wf(Math.abs(d.margin)))
-                    .attr("y", (d, i) => 45 + i * 40)
-                    .attr("x", (d, i) => 850)
-                    .attr("fill", d => d.margin == 0 ? "black" : d.margin > 0 ? demwincol : gopwincol)
-                    .style("font-weight", "500")
-                    .style("font-size", 15)
-                    .attr("text-anchor", "middle")
-                    .attr("dominant-baseline", "central")
-                    .style("font-family", "sf-mono")
-
-
-                bottom.selectAll("cands")
-                    .data(finaldata)
-                    .enter()
-                    .append("text")
-                    .text(id => map_labels.filter(d => d.state == id.state).length==0?"":map_labels.filter(d => d.state == id.state)[0].label)
-                    .attr("y", (d, i) => 45 + i * 40)
-                    .attr("x", (d, i) => 550)
-                    .attr("fill", "black")
-                    .style("font-weight", "500")
-                    .style("font-size", 14)
-                    .attr("text-anchor", "middle")
-                    .attr("dominant-baseline", "central")
-                    .style("font-family", "sf-mono")
-
-
-                bottom.selectAll("cands")
-                    .data(finaldata)
-                    .enter()
-                    .append("line")
-                    .attr("y1", (d, i) => 25 + i * 40)
-                    .attr("x1", (d, i) => 0)
-                    .attr("y2", (d, i) => 25 + i * 40)
-                    .attr("x2", (d, i) => 1000)
-                    .attr("stroke", "lightgrey")
-                    .attr("stroke-width", 1)
-
-
-                bottom.selectAll("cands")
-                    .data(finaldata)
-                    .enter()
-                    .append("text")
-                    .text(d => timeformat(d.date))
-                    .attr("y", (d, i) => 45 + i * 40)
-                    .attr("x", (d, i) => 425)
-                    .attr("fill", "grey")
-                    .style("font-weight", "500")
-                    .style("font-size", 15)
-                    .attr("text-anchor", "start")
-                    .attr("dominant-baseline", "central")
-
-
-                //PHONE POLLS
-
-                bottomPhone.append("rect")
-                    .attr("fill", "white")
-                    .attr("x", 0)
-                    .attr("y", 0)
-                    .attr("width", 1000)
-                    .attr("height", heightPhone)
-
-                bottomPhone.selectAll("states")
-                    .data(finaldata)
-                    .enter()
-                    .append("rect")
-                    .attr("y", (d, i) => 26 + i * 75)
-                    .attr("x", 610)
-                    .attr("height", 75)
-                    .attr("width", 80)
-                    .attr("fill", d => demscale(d.dem_pct))
-
-                bottomPhone.selectAll("states")
-                    .data(finaldata)
-                    .enter()
-                    .append("rect")
-                    .attr("y", (d, i) => 26 + i * 75)
-                    .attr("x", 710)
-                    .attr("height", 75)
-                    .attr("width", 80)
-                    .attr("fill", d => gopscale(d.gop_pct))
-
-                bottomPhone.append("text")
-                    .text("BIDEN")
-                    .attr("y", 12)
-                    .attr("x", 650)
-                    .attr("fill", "black")
-                    .style("font-weight", "500")
-                    .style("font-size", 20)
-                    .attr("text-anchor", "middle")
-                    .attr("dominant-baseline", "central")
-                    .style("font-family", "sf-mono")
-
-
-                bottomPhone.append("text")
-                    .text("TRUMP")
-                    .attr("y", 12)
-                    .attr("x", 750)
-                    .attr("fill", "black")
-                    .style("font-weight", "500")
-                    .style("font-size", 20)
-                    .attr("text-anchor", "middle")
-                    .attr("dominant-baseline", "central")
-                    .style("font-family", "sf-mono")
-
-
-                bottomPhone.append("text")
-                    .text("FILTER")
-                    .attr("y", 15)
-                    .attr("x", 950)
-                    .attr("fill", "black")
-                    .style("font-weight", "500")
-                    .style("font-size", 20)
-                    .attr("text-anchor", "middle")
-                    .attr("dominant-baseline", "central")
-                    .style("font-family", "sf-mono")
-
-
-
-                bottomPhone.append("text")
-                    .text("RESET")
-                    .attr("y", -10)
-                    .attr("x", 950)
-                    .attr("fill", "black")
-                    .style("font-weight", "500")
-                    .style("font-size", 20)
-                    .attr("text-anchor", "middle")
-                    .attr("dominant-baseline", "central")
-                    .on("mouseover", function (d) {
-                        d3.select(this)
-                            .attr("text-decoration", "underline")
-                    })
-                    .on("mouseout", function (d) {
-                        d3.select(this)
-                            .attr("text-decoration", "none")
-                    })
-                    .on("click", function (d) {
-
-                        t(state, "Biden", "All");
-
-                    })
-                    .style("font-family", "sf-mono")
-
-
-
-
-                bottomPhone.selectAll("cands")
-                    .data(finaldata)
-                    .enter()
-                    .append("a")
-                    .attr("href", d => d.url)
-                    .append("text")
-                    .text(d => d.pollster)
-                    .attr("y", (d, i) => d.pollster.length > 30 ? 50 + i * 75 : 62.5 + i * 75)
-                    .attr("x", (d, i) => 50)
-                    .attr("fill", "black")
-                    .style("font-weight", "500")
-                    .style("font-size", 20)
-                    .attr("text-anchor", "start")
-                    .attr("dominant-baseline", "central")
-                    .on("mouseover", function (d) {
-                        d3.select(this)
-                            .attr("text-decoration", "underline")
-                    })
-                    .on("mouseout", function (d) {
-                        d3.select(this)
-                            .attr("text-decoration", "none")
-                    })
-                    .call(wrap, 250)
-                    .style("font-family", "sf-mono")
-
-
-                bottomPhone.selectAll("cands")
-                    .data(finaldata)
-                    .enter()
-                    .append("rect")
-                    .attr("y", (d, i) => 37.5 + i * 75)
-                    .attr("x", 925)
-                    .attr("height", 50)
-                    .attr("width", 50)
-                    .attr("fill", "lightgray")
-                    .on("mouseover", function (d) {
-                        d3.select(this)
-                            .attr("fill", "gray")
-                    })
-                    .on("mouseout", function (d) {
-                        d3.select(this)
-                            .attr("fill", "lightgray")
-                    })
-                    .on("click", function (d) {
-
-                        t(state, "Biden", d.pollster);
-
-                    })
-
-
-                bottomPhone.selectAll("cands")
-                    .data(finaldata)
-                    .enter()
-                    .append("text")
-                    .text(d => wf(d.dem_pct))
-                    .attr("y", (d, i) => 62.5 + i * 75)
-                    .attr("x", (d, i) => 650)
-                    .attr("fill", "black")
-                    .style("font-weight", "500")
-                    .style("font-size", 22)
-                    .attr("text-anchor", "middle")
-                    .attr("dominant-baseline", "central")
-
-                bottomPhone.selectAll("cands")
-                    .data(finaldata)
-                    .enter()
-                    .append("text")
-                    .text(d => wf(d.gop_pct))
-                    .attr("y", (d, i) => 62.5 + i * 75)
-                    .attr("x", (d, i) => 750)
-                    .attr("fill", "black")
-                    .style("font-weight", "500")
-                    .style("font-size", 25)
-                    .attr("text-anchor", "middle")
-                    .attr("dominant-baseline", "central")
-
-
-                bottomPhone.selectAll("cands")
-                    .data(finaldata)
-                    .enter()
-                    .append("text")
-                    .text(d => d.margin > 0 ? "D+" + wf(d.margin) : "R+" + wf(Math.abs(d.margin)))
-                    .attr("y", (d, i) => 62.5 + i * 75)
-                    .attr("x", (d, i) => 850)
-                    .attr("fill", d => d.margin == 0 ? "black" : d.margin > 0 ? demwincol : gopwincol)
-                    .style("font-weight", "500")
-                    .style("font-size", 22)
-                    .attr("text-anchor", "middle")
-                    .attr("dominant-baseline", "central")
-
-                bottomPhone.selectAll("cands")
-                    .data(finaldata)
-                    .enter()
-                    .append("text")
-                    .text(id => map_labels.filter(d => d.state == id.state)[0].label)
-                    .attr("y", (d, i) => 62.5 + i * 75)
-                    .attr("x", (d, i) => 550)
-                    .attr("fill", "black")
-                    .style("font-weight", "500")
-                    .style("font-size", 20)
-                    .attr("text-anchor", "middle")
-                    .attr("dominant-baseline", "central")
-                    .style("font-family", "sf-mono")
-
-
-                bottomPhone.selectAll("cands")
-                    .data(finaldata)
-                    .enter()
-                    .append("line")
-                    .attr("y1", (d, i) => 25 + i * 75)
-                    .attr("x1", (d, i) => 0)
-                    .attr("y2", (d, i) => 25 + i * 75)
-                    .attr("x2", (d, i) => 1000)
-                    .attr("stroke", "lightgrey")
-                    .attr("stroke-width", 1)
-
-
-                bottomPhone.selectAll("cands")
-                    .data(finaldata)
-                    .enter()
-                    .append("text")
-                    .text(d => timeformat(d.date))
-                    .attr("y", (d, i) => 62.5 + i * 75)
-                    .attr("x", (d, i) => 450)
-                    .attr("fill", "grey")
-                    .style("font-weight", "500")
-                    .style("font-size", 15)
-                    .attr("text-anchor", "start")
-                    .attr("dominant-baseline", "central")
-
-                top.append("rect")
-                    .attr("fill", "white")
-                    .attr("x", 0)
-                    .attr("y", 0)
-                    .attr("width", 1000)
-                    .attr("height", 200)
+                d3.selectAll(".change").remove()
 
 
                 top.selectAll("cands")
                     .data(statedata)
                     .enter()
                     .append("text")
+                    .attr("class", "change")
                     .text(d => d > 0 ? "Biden +" + numberformat(d * 100) : "Trump +" + numberformat(Math.abs(d * 100)))
                     .attr("y", (d, i) => 75)
                     .attr("x", (d, i) => 500)
                     .attr("fill", d => d == 0 ? "Black" : d > 0 ? demwincol : gopwincol)
-                    .style("font-weight", "500")
-                    .style("font-size", 30)
+                    .style("font-weight", "100")
+                    .style("font-size", 25)
                     .attr("text-anchor", "middle")
                     .attr("dominant-baseline", "central")
 
                 top.append("text")
+                    .attr("class", "change")
                     .text("Margin vs Trump in " + state)
                     .attr("y", (d, i) => 30)
                     .attr("x", (d, i) => 500)
                     .attr("fill", "black")
-                    .style("font-weight", "500")
-                    .style("font-size", 30)
+                    .style("font-weight", "100")
+                    .style("font-size", 25)
                     .attr("text-anchor", "middle")
                     .attr("dominant-baseline", "central")
 
+                var table = d3.select("#table")
+                    .append("table")
+                    .attr("class", "change")
+
+                var header = table.append("thead")
 
 
-                function wrap(text, width) {
-                    text.each(function () {
-                        var text = d3.select(this),
-                            words = text.text().split(/\s+/).reverse(),
-                            word,
-                            line = [],
-                            lineNumber = 0,
-                            lineHeight = 1.1, // ems
-                            x = text.attr("x"),
-                            y = text.attr("y"),
-                            dy = 0, //parseFloat(text.attr("dy")),
-                            tspan = text.text(null)
-                                .append("tspan")
-                                .attr("x", x)
-                                .attr("y", y)
-                                .attr("dy", dy + "em");
-                        while (word = words.pop()) {
-                            line.push(word);
-                            tspan.text(line.join(" "));
-                            if (tspan.node().getComputedTextLength() > width) {
-                                line.pop();
-                                tspan.text(line.join(" "));
-                                line = [word];
-                                tspan = text.append("tspan")
-                                    .attr("x", x)
-                                    .attr("y", y)
-                                    .attr("dy", ++lineNumber * lineHeight + dy + "em")
-                                    .text(word);
-                            }
-                        }
-                    });
-                }
+                header.append("th")
+                    .style("width", "35%")
+                    .append("h1")
+                    .text("Pollster")
+                    .style("font-family", "sf-mono")
+                    .style("font-weight", 100)
+                    .style("text-align", "left")
+                    .attr("class", "tableFont")
 
-                function wrapComp(text, width) {
-                    text.each(function () {
-                        var text = d3.select(this),
-                            words = text.text().split(/\s+/).reverse(),
-                            word,
-                            line = [],
-                            lineNumber = 0,
-                            lineHeight = 1.1, // ems
-                            x = text.attr("x"),
-                            y = text.attr("y"),
-                            dy = 0, //parseFloat(text.attr("dy")),
-                            tspan = text.text(null)
-                                .append("tspan")
-                                .attr("x", x)
-                                .attr("y", y)
-                                .attr("dy", dy + "em");
-                        while (word = words.pop()) {
-                            line.push(word);
-                            tspan.text(line.join(" "));
-                            if (tspan.node().getComputedTextLength() > width) {
-                                line.pop();
-                                tspan.text(line.join(" "));
-                                line = [word];
-                                tspan = text.append("tspan")
-                                    .attr("x", x)
-                                    .attr("y", y)
-                                    .attr("dy", ++lineNumber * lineHeight + dy + "em")
-                                    .text(word);
-                            }
-                        }
-                    });
-                }
+                header.append("th")
+                    .style("width", "5%")
+                    .append("h1")
+                    .text("")
+                    .style("font-family", "sf-mono")
+                    .style("font-weight", 100)
+                    .style("text-align", "middle")
+                    .attr("class", "tableFont")
+
+                header.append("th")
+                    .style("width", "5%")
+                    .append("h1")
+                    .text("Grade")
+                    .style("font-family", "sf-mono")
+                    .style("font-weight", 100)
+                    .style("text-align", "center")
+                    .attr("class", "tableFont")
+
+                header.append("th")
+                    .style("width", "10%")
+                    .append("h1")
+                    .text("Date")
+                    .style("font-family", "sf-mono")
+                    .style("font-weight", 100)
+                    .style("text-align", "center")
+                    .attr("class", "tableFont")
+
+                header.append("th")
+                    .style("width", "10%")
+                    .append("h1")
+                    .text("Biden")
+                    .style("font-family", "sf-mono")
+                    .style("font-weight", 100)
+                    .style("text-align", "center")
+                    .attr("class", "tableFont")
+
+
+                header.append("th")
+                    .style("width", "10%")
+                    .append("h1")
+                    .text("Trump")
+                    .style("font-family", "sf-mono")
+                    .style("font-weight", 100)
+                    .style("text-align", "center")
+                    .attr("class", "tableFont")
+
+                header.append("th")
+                    .style("width", "5%")
+                    .append("h1")
+                    .text("")
+                    .style("font-family", "sf-mono")
+                    .style("font-weight", 100)
+                    .style("text-align", "center")
+                    .attr("class", "tableFont")
+                header.append("th")
+                    .style("width", "10%")
+                    .append("h1")
+                    .text(pollster == "All" ? "Filter" : "Reset")
+                    .style("font-family", "sf-mono")
+                    .style("font-weight", 100)
+                    .style("text-align", "center")
+                    .attr("class", "tableFont")
+                    .on("mouseover", function (d) {
+                        d3.select(this)
+                            .style("cursor", "pointer")
+                    })
+                    .on("mouseout", function (d) {
+                        d3.select(this)
+                    })
+                    .on("click", function (j) {
+
+                        t(state, "Biden", "All");
+
+                    })
+
+
+                finaldata.forEach((d, i) => {
+                    var stateA = d.state
+                    table.append("tr")
+                        .attr("id", "row" + i)
+
+                    d3.select("#" + "row" + i)
+                        .append("td")
+                        .append("h1")
+                        .text(d.pollster)
+                        .style("font-family", "sf-mono")
+                        .style("font-weight", 100)
+                        .style("text-align", "left")
+                        .attr("class", "tableFont")
+
+                    d3.select("#" + "row" + i)
+                        .append("td")
+                        .append("h1")
+                        .text(map_labels.filter(d => d.state == stateA)[0].label)
+                        .style("font-family", "sf-mono")
+                        .style("font-weight", 100)
+                        .style("text-align", "middle")
+                        .attr("class", "tableFont")
+
+                    d3.select("#" + "row" + i)
+                        .append("td")
+                        .append("h1")
+                        .text(d.grade)
+                        .style("color", d.grade == "-" ? "black" : gradeColor(d.grade_value))
+                        .style("font-family", "sf-mono")
+                        .style("font-weight", 500)
+                        .style("text-align", "right")
+                        .attr("class", "tableFont")
+
+                    d3.select("#" + "row" + i)
+                        .append("td")
+                        .append("h1")
+                        .text(timeformat(d.date))
+                        .style("color", "#afafaf")
+                        .style("font-family", "sf-mono")
+                        .style("font-weight", 500)
+                        .style("text-align", "center")
+                        .attr("class", "tableFont")
+
+                    d3.select("#" + "row" + i)
+                        .append("td")
+                        .style("background-color", demscale(d.dem_pct))
+                        .append("h1")
+                        .text(wf(d.dem_pct))
+                        .style("font-family", "sf-mono")
+                        .style("font-weight", 100)
+                        .style("text-align", "center")
+                        .attr("class", "tableFont")
+
+
+                    d3.select("#" + "row" + i)
+                        .append("td")
+                        .style("padding", "5px")
+                        .style("background-color", gopscale(d.gop_pct))
+                        .append("h1")
+                        .text(wf(d.gop_pct))
+                        .style("font-family", "sf-mono")
+                        .style("font-weight", 100)
+                        .style("text-align", "center")
+                        .attr("class", "tableFont")
+
+                    d3.select("#" + "row" + i)
+                        .append("td")
+                        .style("padding", "5px")
+                        .append("h1")
+                        .text(d.margin == 0?"EVEN":d.margin>0?"D+"+wf(d.margin):"R+"+wf(-d.margin))
+                        .style("color",d.margin == 0?"black":d.margin>0?demwincol:gopwincol)
+                        .style("font-family", "sf-mono")
+                        .style("font-weight", 100)
+                        .style("text-align", "center")
+                        .attr("class", "tableFont")
+
+
+                    d3.select("#" + "row" + i)
+                        .append("td")
+                        .style("padding", "5px")
+                        .append("h1")
+                        .text("X")
+                        .style("color", "#afafaf")
+                        .style("font-family", "sf-mono")
+                        .style("font-weight", 100)
+                        .style("text-align", "center")
+                        .attr("class", "tableFont")
+                        .on("mouseover", function (d) {
+                            d3.select(this)
+                                .style("color", "black")
+                                .style("cursor", "pointer")
+                        })
+                        .on("mouseout", function (d) {
+                            d3.select(this)
+                                .style("color", "#afafaf")
+                        })
+                        .on("click", function (j) {
+
+                            t(state, "Biden", d.pollster);
+
+                        })
+
+                })
 
 
 

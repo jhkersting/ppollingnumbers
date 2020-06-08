@@ -43,6 +43,14 @@
                 width: 100%;
                 margin-left: 0%;
             }
+
+            #table {
+                width: 100%;
+                margin-left: 0%;
+            }
+            .tableFont{
+                font-size: 2.5vw;
+            }
         }
 
         @media only screen and (min-width:601px) {
@@ -50,6 +58,28 @@
                 width: 80%;
                 margin-left: 10%;
             }
+
+            #table {
+                width: 80%;
+                margin-left: 10%;
+            }
+            .tableFont{
+                font-size: 1.5vw;
+            }
+        }
+        th{
+            border-bottom: black solid 1px;
+            padding: 5px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-family: sf-mono;
+            font-weight: 100;
+            text-transform: uppercase;
+        }
+        td{
+            padding: 5px;
         }
     </style>
 
@@ -131,17 +161,17 @@
             <tr>
                 <td style="width: 33%; border-right: solid grey 1.0pt; " valign="middle" width="33%">
                     <a href="https://projects.jhkforecasts.com/democratic_primary/">
-                        <h1 style="text-align: center;font-size: 2vw">DEMOCRATIC PRIMARY</h1>
+                        <h1 style="text-align: center;font-size: 2vw;font-family: sf-mono;">HOUSE</h1>
 
                 </td>
                 <td style="width: 33%; border-right: solid grey 1.0pt; border-left: none; " valign="middle" width="33%">
                     <a href="https://projects.jhkforecasts.com/presidential-forecast/">
-                        <h1 style="text-align: center;font-size: 2vw">PRESIDENTIAL</h1>
+                        <h1 style="text-align: center;font-size: 2vw;font-family: sf-mono">PRESIDENTIAL</h1>
                     </a>
                 </td>
                 <td style="width: 33%; ; " valign="middle" width="33%">
                     <a href="https://projects.jhkforecasts.com/senate_forecast/">
-                        <h1 style="text-align: center;font-size: 2vw;">SENATE</h1>
+                        <h1 style="text-align: center;font-size: 2vw;font-family: sf-mono">SENATE</h1>
                     </a>
                 </td>
             </tr>
@@ -159,13 +189,13 @@
 
     <div style="margin-top: 10px" id="usmap"></div>
     <div style="text-align:center">
-		<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-		<ins class="adsbygoogle" style="display:block;margin-right:auto;margin-left: auto" data-ad-format="fluid"
-			data-ad-layout-key="-h2+d+5c-9-3e" data-ad-client="ca-pub-8025120308040073" data-ad-slot="8603820464"></ins>
-		<script>
-			(adsbygoogle = window.adsbygoogle || []).push({});
-		</script>
-	</div>
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <ins class="adsbygoogle" style="display:block;margin-right:auto;margin-left: auto" data-ad-format="fluid"
+            data-ad-layout-key="-h2+d+5c-9-3e" data-ad-client="ca-pub-8025120308040073" data-ad-slot="8603820464"></ins>
+        <script>
+            (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
+    </div>
     <h1 style="text-align: center;font-weight: 700;">Battleground States</h1>
     <div id="tossups"></div>
     <h1 style="font-size: 3vw;text-align: left;font-weight: 700;margin-left:2%">Polls</h1>
@@ -173,7 +203,9 @@
     <div id="polls">
         <div style="text-align: center;">
             <h1 style="font-size: 2vw;text-align: center;">Select State</h1>
-            <select class="selectbox" style="margin-top: 0px;margin-bottom: 10px;" id="state-search">
+            <select
+                style="margin-top: 0px;margin-bottom: 10px;font-size: 1.5vw;text-transform: uppercase;font-family: sf-mono;padding: .5vw;"
+                id="state-search">
                 <option value="All">All</option>
                 <option value="Alabama">Alabama</option>
                 <option value="Alaska">Alaska</option>
@@ -231,18 +263,17 @@
         </div>
     </div>
     <div id="top"></div>
-    <div class="computer" style="margin-top: 20px;" id="bottom"></div>
-    <div class="phone" style="margin-top: 20px" id="bottomPhone"></div>
+    <div style="margin-top: 20px;" id="table"></div>
 
     <script src="test.js"></script>
     <div style="text-align:center">
-		<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-		<ins class="adsbygoogle" style="display:block;margin-right:auto;margin-left: auto" data-ad-format="fluid"
-			data-ad-layout-key="-h2+d+5c-9-3e" data-ad-client="ca-pub-8025120308040073" data-ad-slot="8603820464"></ins>
-		<script>
-			(adsbygoogle = window.adsbygoogle || []).push({});
-		</script>
-	</div>
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <ins class="adsbygoogle" style="display:block;margin-right:auto;margin-left: auto" data-ad-format="fluid"
+            data-ad-layout-key="-h2+d+5c-9-3e" data-ad-client="ca-pub-8025120308040073" data-ad-slot="8603820464"></ins>
+        <script>
+            (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
+    </div>
     <div style="height: 70px;background-color: darkblue;width: 100%;">
         <h4 style="font-weight: 400;color: white;padding-top: 30px;margin-left: 35;">© 2020 JHK FORECASTS</h4>
     </div>
