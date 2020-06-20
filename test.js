@@ -164,7 +164,7 @@ d3.csv("https://data.jhkforecasts.com/pollster-ratings.csv", pollster_ratings =>
                     d.weight = d.n_adjusted * d.population_adj
                     d.sum = (d.dem_pct + d.gop_pct)
                     d.weight = Math.pow(d.weight, d.grade_value) * ((d.dem_pct + d.gop_pct) / 100)
-                    d.time_weight = d.days_old>100?2*d.grade_value: d.weight / ((30 + d.days_old) / 30)
+                    d.time_weight = d.days_old>100?(2*d.grade_value>d.weight / ((30 + d.days_old) / 30)?d.weight / ((30 + d.days_old) / 30):2*d.grade_value): d.weight / ((30 + d.days_old) / 30)
                     d.dem_adj = d.dem_pct
                     d.gop_adj = d.gop_pct
                     d.margin = d.dem_adj - d.gop_adj
@@ -781,7 +781,7 @@ d3.csv("https://data.jhkforecasts.com/pollster-ratings.csv", pollster_ratings =>
                     .attr("class", "tableFont")
 
                 header.append("th")
-                    .style("width", "5%")
+                    .style("width", "1%")
                     .append("h1")
                     .text("")
                     .style("font-family", "sf-mono")
@@ -860,15 +860,18 @@ d3.csv("https://data.jhkforecasts.com/pollster-ratings.csv", pollster_ratings =>
                     var stateA = d.state
                     table.append("tr")
                         .attr("id", "row" + i)
+                        .style("height","7vw")
 
                     d3.select("#" + "row" + i)
                         .append("td")
+                        .append("a")
+                        .attr("href",d.url)
                         .append("h1")
                         .text(d.pollster)
                         .style("font-family", "sf-mono")
                         .style("font-weight", 100)
                         .style("text-align", "left")
-                        .attr("class", "tableFont")
+                        .attr("class", "tableFont linkHover")
 
                         
 
@@ -894,11 +897,12 @@ d3.csv("https://data.jhkforecasts.com/pollster-ratings.csv", pollster_ratings =>
                         d3.select("#" + "row" + i)
                         .append("td")
                         .append("h1")
-                        .text(d.n+" "+d.population)
+                        .text(d.n+"     "+d.population)
                         .style("font-family", "sf-mono")
                         .style("font-weight", 100)
                         .style("text-align", "center")
                         .attr("class", "tableFont")
+                        
 
                     d3.select("#" + "row" + i)
                         .append("td")
