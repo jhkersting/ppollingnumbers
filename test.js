@@ -61,16 +61,16 @@ d3.csv("https://data.jhkforecasts.com/pollster-ratings.csv", pollster_ratings =>
         return d.MeanRevertedBias == NaN ? 0 : d.MeanRevertedBias
     })
     var grade_scale = [
-        { Grade: "A+", Value: 1.5 },
-        { Grade: "A", Value: 1.4 },
-        { Grade: "A-", Value: 1.3 },
-        { Grade: "A/B", Value: 1.2 },
-        { Grade: "B+", Value: 1.1 },
-        { Grade: "B", Value: 1 },
-        { Grade: "B-", Value: .95 },
-        { Grade: "B/C", Value: .9 },
-        { Grade: "C+", Value: .85 },
-        { Grade: "C", Value: .8 },
+        { Grade: "A+", Value: 1.35 },
+        { Grade: "A", Value: 1.3 },
+        { Grade: "A-", Value: 1.25 },
+        { Grade: "A/B", Value: 1.15 },
+        { Grade: "B+", Value: 1.05 },
+        { Grade: "B", Value: .95 },
+        { Grade: "B-", Value: .9 },
+        { Grade: "B/C", Value: .85 },
+        { Grade: "C+", Value: .8 },
+        { Grade: "C", Value: .75 },
         { Grade: "C-", Value: .7 },
         { Grade: "C/D", Value: .75 },
         { Grade: "D+", Value: .5 },
@@ -164,7 +164,7 @@ d3.csv("https://data.jhkforecasts.com/pollster-ratings.csv", pollster_ratings =>
                     d.weight = d.n_adjusted * d.population_adj
                     d.sum = (d.dem_pct + d.gop_pct)
                     d.weight = Math.pow(d.weight, d.grade_value) * ((d.dem_pct + d.gop_pct) / 100)
-                    d.time_weight = ((30 + d.days_old) / 30)
+                    d.time_weight = d.days_old>100?2*d.grade_value: d.weight / ((30 + d.days_old) / 30)
                     d.dem_adj = d.dem_pct
                     d.gop_adj = d.gop_pct
                     d.margin = d.dem_adj - d.gop_adj
@@ -181,8 +181,9 @@ d3.csv("https://data.jhkforecasts.com/pollster-ratings.csv", pollster_ratings =>
                     var polls = data_filtered[i].values
                     polls.sort((a, b) => b.weight - a.weight)
                     var poll = polls[0]
-                    best_poll.push(poll)
+                    best_poll.push(polls)
                 }
+                var best_poll = best_poll.flat()
                 var data_filtered = d3.nest()
                     .key(d => d.poll_index)
                     .entries(best_poll)
@@ -195,10 +196,9 @@ d3.csv("https://data.jhkforecasts.com/pollster-ratings.csv", pollster_ratings =>
                         return d;
                     })
                     polls.sort((a, b) => b.weight - a.weight)
-                    var poll = polls[0]
-                    weighted_polls.push(poll)
+                    weighted_polls.push(polls)
                 }
-                var data_filtered = weighted_polls
+                var data_filtered = weighted_polls.flat()
 
                 data_filtered.forEach((d, i) => {
                     d.margin_weight = (d.margin / 100) * d.weight
@@ -208,6 +208,7 @@ d3.csv("https://data.jhkforecasts.com/pollster-ratings.csv", pollster_ratings =>
                 var polling_avg = []
                 for (var i = 0; i < pvi.length; i++) {
                     var polls = data_filtered.filter(d => d.state == pvi[i].state)
+                    console.log(polls)
                     var margin_sum = d3.sum(polls, d => d.margin_weight)
                     var weight_sum = d3.sum(polls, d => d.weight)
                     var polling_margin = weight_sum == 0 ? 0 : margin_sum / weight_sum
@@ -369,12 +370,12 @@ d3.csv("https://data.jhkforecasts.com/pollster-ratings.csv", pollster_ratings =>
                         .attr("text-anchor", "end")
 
                     svg.append("text")
-                        .text("Electoral Votes")
+                        .text("TRUMP")
                         .attr("y", -60)
                         .attr("x", 800)
                         .attr("fill", "Black")
                         .style("font-weight", "100")
-                        .style("font-size", 30)
+                        .style("font-size", 25)
                         .attr("text-anchor", "end")
 
                     svg.append("text")
@@ -387,12 +388,12 @@ d3.csv("https://data.jhkforecasts.com/pollster-ratings.csv", pollster_ratings =>
                         .attr("text-anchor", "start")
 
                     svg.append("text")
-                        .text("Electoral Votes")
+                        .text("BIDEN")
                         .attr("y", -60)
                         .attr("x", 215)
                         .attr("fill", "Black")
                         .style("font-weight", "100")
-                        .style("font-size", 30)
+                        .style("font-size", 25)
                         .attr("text-anchor", "start")
 
                     svg.append("g")
@@ -700,7 +701,7 @@ d3.csv("https://data.jhkforecasts.com/pollster-ratings.csv", pollster_ratings =>
 
             t(d3.select('#state-search').property('value'), "Biden", "All");
             function t(state, candidate, pollster) {
-                var dataNew = data_new.filter(d => d.dem == "Biden")
+                var dataNew = data_filtered.filter(d => d.dem == "Biden")
                 var datanew = state == "All" ? dataNew.slice(0, 200) : dataNew.filter(d => d.state == state)
                 var finaldata = candidate == "All" ? datanew : datanew.filter(d => d.dem == candidate)
                 var finaldata = pollster == "All" ? finaldata : finaldata.filter(d => d.pollster == pollster)
@@ -708,7 +709,7 @@ d3.csv("https://data.jhkforecasts.com/pollster-ratings.csv", pollster_ratings =>
                 finaldata.forEach((d, i) => {
                     d.index = d.pollster + d.state + d.population
                 })
-                finaldata.sort((a, b) => b.created_at - a.created_at)
+                state == "All" ?finaldata.sort((a, b) => b.created_at - a.created_at):finaldata.sort((a, b) => b.weight - a.weight)
 
                 var statedata = [
                     state == "All" ? 0 : Biden.filter(d => d.state == state)[0].margin,
@@ -761,7 +762,7 @@ d3.csv("https://data.jhkforecasts.com/pollster-ratings.csv", pollster_ratings =>
                     .style("text-align", "left")
                     .attr("class", "tableFont")
 
-                header.append("th")
+                    header.append("th")
                     .style("width", "5%")
                     .append("h1")
                     .text("")
@@ -780,7 +781,16 @@ d3.csv("https://data.jhkforecasts.com/pollster-ratings.csv", pollster_ratings =>
                     .attr("class", "tableFont")
 
                 header.append("th")
-                    .style("width", "10%")
+                    .style("width", "5%")
+                    .append("h1")
+                    .text("")
+                    .style("font-family", "sf-mono")
+                    .style("font-weight", 100)
+                    .style("text-align", "center")
+                    .attr("class", "tableFont")
+
+                header.append("th")
+                    .style("width", "5%")
                     .append("h1")
                     .text("Date")
                     .style("font-family", "sf-mono")
@@ -789,7 +799,16 @@ d3.csv("https://data.jhkforecasts.com/pollster-ratings.csv", pollster_ratings =>
                     .attr("class", "tableFont")
 
                 header.append("th")
-                    .style("width", "10%")
+                    .style("width", "5%")
+                    .append("h1")
+                    .text("Weight")
+                    .style("font-family", "sf-mono")
+                    .style("font-weight", 100)
+                    .style("text-align", "center")
+                    .attr("class", "tableFont")
+
+                header.append("th")
+                    .style("width", "5%")
                     .append("h1")
                     .text("Biden")
                     .style("font-family", "sf-mono")
@@ -799,7 +818,7 @@ d3.csv("https://data.jhkforecasts.com/pollster-ratings.csv", pollster_ratings =>
 
 
                 header.append("th")
-                    .style("width", "10%")
+                    .style("width", "5%")
                     .append("h1")
                     .text("Trump")
                     .style("font-family", "sf-mono")
@@ -851,6 +870,9 @@ d3.csv("https://data.jhkforecasts.com/pollster-ratings.csv", pollster_ratings =>
                         .style("text-align", "left")
                         .attr("class", "tableFont")
 
+                        
+
+
                     d3.select("#" + "row" + i)
                         .append("td")
                         .append("h1")
@@ -869,12 +891,30 @@ d3.csv("https://data.jhkforecasts.com/pollster-ratings.csv", pollster_ratings =>
                         .style("font-weight", 500)
                         .style("text-align", "right")
                         .attr("class", "tableFont")
+                        d3.select("#" + "row" + i)
+                        .append("td")
+                        .append("h1")
+                        .text(d.n+" "+d.population)
+                        .style("font-family", "sf-mono")
+                        .style("font-weight", 100)
+                        .style("text-align", "center")
+                        .attr("class", "tableFont")
 
                     d3.select("#" + "row" + i)
                         .append("td")
                         .append("h1")
                         .text(timeformat(d.date))
                         .style("color", "#afafaf")
+                        .style("font-family", "sf-mono")
+                        .style("font-weight", 500)
+                        .style("text-align", "center")
+                        .attr("class", "tableFont")
+
+                    d3.select("#" + "row" + i)
+                        .append("td")
+                        .append("h1")
+                        .text(numberformat(d.weight))
+                        .style("color", "blackx")
                         .style("font-family", "sf-mono")
                         .style("font-weight", 500)
                         .style("text-align", "center")
@@ -906,8 +946,8 @@ d3.csv("https://data.jhkforecasts.com/pollster-ratings.csv", pollster_ratings =>
                         .append("td")
                         .style("padding", "5px")
                         .append("h1")
-                        .text(d.margin == 0?"EVEN":d.margin>0?"D+"+wf(d.margin):"R+"+wf(-d.margin))
-                        .style("color",d.margin == 0?"black":d.margin>0?demwincol:gopwincol)
+                        .text(d.margin == 0 ? "EVEN" : d.margin > 0 ? "D+" + wf(d.margin) : "R+" + wf(-d.margin))
+                        .style("color", d.margin == 0 ? "black" : d.margin > 0 ? demwincol : gopwincol)
                         .style("font-family", "sf-mono")
                         .style("font-weight", 100)
                         .style("text-align", "center")

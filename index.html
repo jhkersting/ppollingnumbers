@@ -37,6 +37,50 @@
         #tipDiv {
             display: inline;
         }
+
+        @media only screen and (max-width:600px) {
+            #usmap {
+                width: 100%;
+                margin-left: 0%;
+            }
+
+            #table {
+                width: 100%;
+                margin-left: 0%;
+            }
+            .tableFont{
+                font-size: 2.5vw;
+            }
+        }
+
+        @media only screen and (min-width:601px) {
+            #usmap {
+                width: 80%;
+                margin-left: 10%;
+            }
+
+            #table {
+                width: 80%;
+                margin-left: 10%;
+            }
+            .tableFont{
+                font-size: 1.5vw;
+            }
+        }
+        th{
+            border-bottom: black solid 1px;
+            padding: 5px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-family: sf-mono;
+            font-weight: 100;
+            text-transform: uppercase;
+        }
+        td{
+            padding: 5px;
+        }
     </style>
 
 <body>
@@ -117,17 +161,17 @@
             <tr>
                 <td style="width: 33%; border-right: solid grey 1.0pt; " valign="middle" width="33%">
                     <a href="https://projects.jhkforecasts.com/democratic_primary/">
-                        <h1 style="text-align: center;font-size: 2vw">DEMOCRATIC PRIMARY</h1>
+                        <h1 style="text-align: center;font-size: 2vw;font-family: sf-mono;">HOUSE</h1>
 
                 </td>
                 <td style="width: 33%; border-right: solid grey 1.0pt; border-left: none; " valign="middle" width="33%">
                     <a href="https://projects.jhkforecasts.com/presidential-forecast/">
-                        <h1 style="text-align: center;font-size: 2vw">PRESIDENTIAL</h1>
+                        <h1 style="text-align: center;font-size: 2vw;font-family: sf-mono">PRESIDENTIAL</h1>
                     </a>
                 </td>
                 <td style="width: 33%; ; " valign="middle" width="33%">
                     <a href="https://projects.jhkforecasts.com/senate_forecast/">
-                        <h1 style="text-align: center;font-size: 2vw;">SENATE</h1>
+                        <h1 style="text-align: center;font-size: 2vw;font-family: sf-mono">SENATE</h1>
                     </a>
                 </td>
             </tr>
@@ -135,125 +179,101 @@
     </table>
 
     <h1 style="text-align: center;font-size: 5vw;font-weight: 900;background-color: #3E5AA9;color: white;">
-        Trump v. Biden</h1>
+        Trump v. Biden Polling Average</h1>
     <a href="https://twitter.com/jhkersting">
-        <h2 style="font-weight: 700;text-decoration: underline;">Created By : Jack Kersting</h2>
+        <h2 style="font-weight: 700;text-decoration: underline;font-size: 2vw;">Created By : Jack Kersting</h2>
     </a>
-
-
+    <p style="text-indent: 20px;margin: 10px;"> The data created below is calculated from the 538 polling database. The
+        polling average are calculated by combining the national polling and pvi with state polling averages. States
+        with more polling however don't weigh the national vote. This is purely a polling average. </p>
 
     <div style="margin-top: 10px" id="usmap"></div>
-
-    <h1 style="text-align: center;font-weight: 500;">Battleground States</h1>
-    <div id="tossups"></div>
     <div style="text-align:center">
         <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-        <ins class="adsbygoogle" style="display:block" data-ad-format="fluid" data-ad-layout-key="-h2+d+5c-9-3e"
-            data-ad-client="ca-pub-8025120308040073" data-ad-slot="8603820464"></ins>
+        <ins class="adsbygoogle" style="display:block;margin-right:auto;margin-left: auto" data-ad-format="fluid"
+            data-ad-layout-key="-h2+d+5c-9-3e" data-ad-client="ca-pub-8025120308040073" data-ad-slot="8603820464"></ins>
         <script>
             (adsbygoogle = window.adsbygoogle || []).push({});
         </script>
     </div>
+    <h1 style="text-align: center;font-weight: 700;">Battleground States</h1>
+    <div id="tossups"></div>
+    <h1 style="font-size: 3vw;text-align: left;font-weight: 700;margin-left:2%">Polls</h1>
+    <p style="font-size: 1.5vw;text-align: left;margin-left:5%">click box at end to filter by pollster</p>
     <div id="polls">
-        <table style="border-collapse: collapse; border: none;margin-top: 20px;margin-bottom: 20px;" cellspacing="0"
-            cellpadding="0" width="100%">
-            <tbody>
-                <tr>
-                    <td style="width: 20%;  ">
-                        <h1 style="font-size: 2vw;text-align: center;">Select State</h1>
-
-                </tr>
-                <tr>
-                    <td style="width: 50%;  ">
-                        <select class="selectbox" style="margin-left: 40%;width:20%;margin-top: 10px;"
-                            id="state-search">
-                            <option value="All">All</option>
-                            <option value="Alabama">Alabama</option>
-                            <option value="Alaska">Alaska</option>
-                            <option value="Arizona">Arizona</option>
-                            <option value="Arkansas">Arkansas</option>
-                            <option value="California">California</option>
-                            <option value="Colorado">Colorado</option>
-                            <option value="Connecticut">Connecticut</option>
-                            <option value="Delaware">Delaware</option>
-                            <option value="District of Columbia">District of Columbia</option>
-                            <option value="Florida">Florida</option>
-                            <option value="Georgia">Georgia</option>
-                            <option value="Hawaii">Hawaii</option>
-                            <option value="Idaho">Idaho</option>
-                            <option value="Illinois">Illinois</option>
-                            <option value="Indiana">Indiana</option>
-                            <option value="Iowa">Iowa</option>
-                            <option value="Kansas">Kansas</option>
-                            <option value="Kentucky">Kentucky</option>
-                            <option value="Louisiana">Louisiana</option>
-                            <option value="Maine">Maine</option>
-                            <option value="Maryland">Maryland</option>
-                            <option value="Massachusetts">Massachusetts</option>
-                            <option value="Michigan">Michigan</option>
-                            <option value="Minnesota">Minnesota</option>
-                            <option value="Mississippi">Mississippi</option>
-                            <option value="Missouri">Missouri</option>
-                            <option value="Montana">Montana</option>
-                            <option value="Nebraska">Nebraska</option>
-                            <option value="Nevada">Nevada</option>
-                            <option value="New Hampshire">New Hampshire</option>
-                            <option value="New Jersey">New Jersey</option>
-                            <option value="New Mexico">New Mexico</option>
-                            <option value="New York">New York</option>
-                            <option value="North Carolina">North Carolina</option>
-                            <option value="North Dakota">North Dakota</option>
-                            <option value="Ohio">Ohio</option>
-                            <option value="Oklahoma">Oklahoma</option>
-                            <option value="Oregon">Oregon</option>
-                            <option value="Pennsylvania">Pennsylvania</option>
-                            <option value="Rhode Island">Rhode Island</option>
-                            <option value="South Carolina">South Carolina</option>
-                            <option value="South Dakota">South Dakota</option>
-                            <option value="Tennessee">Tennessee</option>
-                            <option value="Texas">Texas</option>
-                            <option value="Utah">Utah</option>
-                            <option value="Vermont">Vermont</option>
-                            <option value="Virginia">Virginia</option>
-                            <option value="Washington">Washington</option>
-                            <option value="West Virginia">West Virginia</option>
-                            <option value="Wisconsin">Wisconsin</option>
-                            <option value="Wyoming">Wyoming</option>
-                            <option value="US">National</option>
-                        </select>
-
-                    </td>
-
-                </tr>
-            </tbody>
-        </table>
+        <div style="text-align: center;">
+            <h1 style="font-size: 2vw;text-align: center;">Select State</h1>
+            <select
+                style="margin-top: 0px;margin-bottom: 10px;font-size: 1.5vw;text-transform: uppercase;font-family: sf-mono;padding: .5vw;"
+                id="state-search">
+                <option value="All">All</option>
+                <option value="US">National</option>
+                <option value="Alabama">Alabama</option>
+                <option value="Alaska">Alaska</option>
+                <option value="Arizona">Arizona</option>
+                <option value="Arkansas">Arkansas</option>
+                <option value="California">California</option>
+                <option value="Colorado">Colorado</option>
+                <option value="Connecticut">Connecticut</option>
+                <option value="Delaware">Delaware</option>
+                <option value="District of Columbia">District of Columbia</option>
+                <option value="Florida">Florida</option>
+                <option value="Georgia">Georgia</option>
+                <option value="Hawaii">Hawaii</option>
+                <option value="Idaho">Idaho</option>
+                <option value="Illinois">Illinois</option>
+                <option value="Indiana">Indiana</option>
+                <option value="Iowa">Iowa</option>
+                <option value="Kansas">Kansas</option>
+                <option value="Kentucky">Kentucky</option>
+                <option value="Louisiana">Louisiana</option>
+                <option value="Maine">Maine</option>
+                <option value="Maryland">Maryland</option>
+                <option value="Massachusetts">Massachusetts</option>
+                <option value="Michigan">Michigan</option>
+                <option value="Minnesota">Minnesota</option>
+                <option value="Mississippi">Mississippi</option>
+                <option value="Missouri">Missouri</option>
+                <option value="Montana">Montana</option>
+                <option value="Nebraska">Nebraska</option>
+                <option value="Nevada">Nevada</option>
+                <option value="New Hampshire">New Hampshire</option>
+                <option value="New Jersey">New Jersey</option>
+                <option value="New Mexico">New Mexico</option>
+                <option value="New York">New York</option>
+                <option value="North Carolina">North Carolina</option>
+                <option value="North Dakota">North Dakota</option>
+                <option value="Ohio">Ohio</option>
+                <option value="Oklahoma">Oklahoma</option>
+                <option value="Oregon">Oregon</option>
+                <option value="Pennsylvania">Pennsylvania</option>
+                <option value="Rhode Island">Rhode Island</option>
+                <option value="South Carolina">South Carolina</option>
+                <option value="South Dakota">South Dakota</option>
+                <option value="Tennessee">Tennessee</option>
+                <option value="Texas">Texas</option>
+                <option value="Utah">Utah</option>
+                <option value="Vermont">Vermont</option>
+                <option value="Virginia">Virginia</option>
+                <option value="Washington">Washington</option>
+                <option value="West Virginia">West Virginia</option>
+                <option value="Wisconsin">Wisconsin</option>
+                <option value="Wyoming">Wyoming</option>
+            </select>
+        </div>
     </div>
     <div id="top"></div>
-    <div style="margin-top: 20px" id="bottom"></div>
-    <p style="text-indent: 20px;margin: 10px;"> The data created below is calculated from the 538 polling database. The
-        polling average are calculated by combining the national polling and pvi with state polling averages. States
-        with more polling however don't weigh the national vote as much. This is more of a NowCast projection, as if the
-        election was today, compared to the forecast which accounts for the uncertaintity due to the distance from the
-        election. Another difference is the forecast uses other factors besides polling. </p>
+    <div style="margin-top: 20px;" id="table"></div>
+
     <script src="test.js"></script>
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-    <ins class="adsbygoogle" style="display:block" data-ad-format="fluid" data-ad-layout-key="-h2+d+5c-9-3e"
-        data-ad-client="ca-pub-8025120308040073" data-ad-slot="8603820464"></ins>
-    <script>
-        (adsbygoogle = window.adsbygoogle || []).push({});
-    </script>
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-    <ins class="adsbygoogle" style="display:block" data-ad-format="fluid" data-ad-layout-key="-h2+d+5c-9-3e"
-        data-ad-client="ca-pub-8025120308040073" data-ad-slot="8603820464"></ins>
-    <script>
-        (adsbygoogle = window.adsbygoogle || []).push({});
-    </script>
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-    <ins class="adsbygoogle" style="display:block" data-ad-format="fluid" data-ad-layout-key="-h2+d+5c-9-3e"
-        data-ad-client="ca-pub-8025120308040073" data-ad-slot="8603820464"></ins>
-    <script>
-        (adsbygoogle = window.adsbygoogle || []).push({});
-    </script>
+    <div style="text-align:center">
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <ins class="adsbygoogle" style="display:block;margin-right:auto;margin-left: auto" data-ad-format="fluid"
+            data-ad-layout-key="-h2+d+5c-9-3e" data-ad-client="ca-pub-8025120308040073" data-ad-slot="8603820464"></ins>
+        <script>
+            (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
+    </div>
     <div style="height: 70px;background-color: darkblue;width: 100%;">
         <h4 style="font-weight: 400;color: white;padding-top: 30px;margin-left: 35;">© 2020 JHK FORECASTS</h4>
     </div>
