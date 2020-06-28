@@ -61,16 +61,16 @@ d3.csv("https://data.jhkforecasts.com/pollster-ratings.csv", pollster_ratings =>
         return d.MeanRevertedBias == NaN ? 0 : d.MeanRevertedBias
     })
     var grade_scale = [
-        { Grade: "A+", Value: 1.35 },
-        { Grade: "A", Value: 1.3 },
-        { Grade: "A-", Value: 1.25 },
-        { Grade: "A/B", Value: 1.15 },
-        { Grade: "B+", Value: 1.05 },
-        { Grade: "B", Value: .95 },
-        { Grade: "B-", Value: .9 },
-        { Grade: "B/C", Value: .85 },
-        { Grade: "C+", Value: .8 },
-        { Grade: "C", Value: .75 },
+        { Grade: "A+", Value: 1.5 },
+        { Grade: "A", Value: 1.45 },
+        { Grade: "A-", Value: 1.4 },
+        { Grade: "A/B", Value: 1.3 },
+        { Grade: "B+", Value: 1.25 },
+        { Grade: "B", Value: 1.15 },
+        { Grade: "B-", Value:1.1 },
+        { Grade: "B/C", Value: 1 },
+        { Grade: "C+", Value: .9 },
+        { Grade: "C", Value: .8 },
         { Grade: "C-", Value: .7 },
         { Grade: "C/D", Value: .75 },
         { Grade: "D+", Value: .5 },
@@ -104,18 +104,15 @@ d3.csv("https://data.jhkforecasts.com/pollster-ratings.csv", pollster_ratings =>
 
         }
         pvi.push(us)
-        console.log(pvi)
         d3.csv("https://projects.fivethirtyeight.com/polls-page/president_polls.csv", data => {
             var data = data.filter(d => d.answer != "Schultz")
             var data = data.filter(d => d.candidate_party != "LIB")
-            console.log(data)
             data.forEach((d, i) => {
                 d.party_id = d.candidate_party == "DEM" ? 0 : 1
                 return d;
             })
             data.sort((a, b) => a.party_id - b.party_id)
 
-            console.log(data[0])
             var datanew = d3.nest()
                 .key(d => d.question_id)
                 .entries(data)
@@ -160,20 +157,20 @@ d3.csv("https://data.jhkforecasts.com/pollster-ratings.csv", pollster_ratings =>
                     d.days_old = (new Date() - d.date) / time_scale
                     d.grade_value = pollster_grade_value[pollster_grade_letter.indexOf(d.grade)]
                     d.population_adj = d.population == "lv" ? 1.33 : d.population == "rv" ? 1 : .7
-                    d.n_adjusted = d.n > 4000 ? Math.pow((d.n - 4000), .2) + 27 : Math.pow(d.n, .4)
+                    d.n_adjusted = d.n > 4000 ? Math.pow((d.n - 4000), .05) + 27 : Math.pow(d.n, .5)
                     d.weight = d.n_adjusted * d.population_adj
                     d.sum = (d.dem_pct + d.gop_pct)
-                    d.weight = Math.pow(d.weight, d.grade_value) * ((d.dem_pct + d.gop_pct) / 100)
-                    d.time_weight = d.days_old>100?(2*d.grade_value>d.weight / ((30 + d.days_old) / 30)?d.weight / ((30 + d.days_old) / 30):2*d.grade_value): d.weight / ((30 + d.days_old) / 30)
+                    d.weight = d.weight* d.grade_value
+                    d.time_weight = d.days_old < 60 ? (d.weight - ((d.weight / 60) * d.days_old)) :2 * d.grade_value
                     d.dem_adj = d.dem_pct
                     d.gop_adj = d.gop_pct
                     d.margin = d.dem_adj - d.gop_adj
                     return d;
                 })
-
+                console.log(data_filtered.filter(d=>d.state=="Georgia"))
 
                 var data_filtered = d3.nest()
-                    .key(d => d.poll_id)
+                    .key(d => d.poll_index)
                     .entries(data_filtered)
 
                 var best_poll = []
@@ -208,7 +205,6 @@ d3.csv("https://data.jhkforecasts.com/pollster-ratings.csv", pollster_ratings =>
                 var polling_avg = []
                 for (var i = 0; i < pvi.length; i++) {
                     var polls = data_filtered.filter(d => d.state == pvi[i].state)
-                    console.log(polls)
                     var margin_sum = d3.sum(polls, d => d.margin_weight)
                     var weight_sum = d3.sum(polls, d => d.weight)
                     var polling_margin = weight_sum == 0 ? 0 : margin_sum / weight_sum
@@ -309,13 +305,10 @@ d3.csv("https://data.jhkforecasts.com/pollster-ratings.csv", pollster_ratings =>
 
 
             var state_data = state_cand
-            console.log(state_data)
             update("Biden");
             function update(input) {
                 var state = state_data.filter(d => d.candidate == input)
-                console.log(state)
                 var national = national_data.filter(d => d.candidate == input)
-                console.log(national)
                 d3.json("https://projects.jhkforecasts.com/presidential-forecast/us-states.json", function (json) {
 
 
@@ -570,7 +563,6 @@ d3.csv("https://data.jhkforecasts.com/pollster-ratings.csv", pollster_ratings =>
                     "index": 54
                 }
             ]
-            console.log(state_data)
             tossupstates.forEach((d, j) => {
                 d.electoralvotes = Biden[d.index].electoralvotes
                 d.pvi = pvi[d.index].pvi
@@ -705,16 +697,14 @@ d3.csv("https://data.jhkforecasts.com/pollster-ratings.csv", pollster_ratings =>
                 var datanew = state == "All" ? dataNew.slice(0, 200) : dataNew.filter(d => d.state == state)
                 var finaldata = candidate == "All" ? datanew : datanew.filter(d => d.dem == candidate)
                 var finaldata = pollster == "All" ? finaldata : finaldata.filter(d => d.pollster == pollster)
-                console.log(finaldata)
                 finaldata.forEach((d, i) => {
                     d.index = d.pollster + d.state + d.population
                 })
-                state == "All" ?finaldata.sort((a, b) => b.created_at - a.created_at):finaldata.sort((a, b) => b.weight - a.weight)
+                state == "All" ? finaldata.sort((a, b) => b.created_at - a.created_at) : finaldata.sort((a, b) => b.weight - a.weight)
 
                 var statedata = [
                     state == "All" ? 0 : Biden.filter(d => d.state == state)[0].margin,
                 ]
-                console.log(statedata)
                 document.getElementById("top").style.display = state == "All" ? "none" : "inline"
 
 
@@ -762,7 +752,7 @@ d3.csv("https://data.jhkforecasts.com/pollster-ratings.csv", pollster_ratings =>
                     .style("text-align", "left")
                     .attr("class", "tableFont")
 
-                    header.append("th")
+                header.append("th")
                     .style("width", "5%")
                     .append("h1")
                     .text("")
@@ -860,12 +850,12 @@ d3.csv("https://data.jhkforecasts.com/pollster-ratings.csv", pollster_ratings =>
                     var stateA = d.state
                     table.append("tr")
                         .attr("id", "row" + i)
-                        .style("height","7vw")
+                        .style("height", "7vw")
 
                     d3.select("#" + "row" + i)
                         .append("td")
                         .append("a")
-                        .attr("href",d.url)
+                        .attr("href", d.url)
                         .append("h1")
                         .text(d.pollster)
                         .style("font-family", "sf-mono")
@@ -873,7 +863,7 @@ d3.csv("https://data.jhkforecasts.com/pollster-ratings.csv", pollster_ratings =>
                         .style("text-align", "left")
                         .attr("class", "tableFont linkHover")
 
-                        
+
 
 
                     d3.select("#" + "row" + i)
@@ -894,15 +884,15 @@ d3.csv("https://data.jhkforecasts.com/pollster-ratings.csv", pollster_ratings =>
                         .style("font-weight", 500)
                         .style("text-align", "right")
                         .attr("class", "tableFont")
-                        d3.select("#" + "row" + i)
+                    d3.select("#" + "row" + i)
                         .append("td")
                         .append("h1")
-                        .text(d.n+"     "+d.population)
+                        .text(d.n + "     " + d.population)
                         .style("font-family", "sf-mono")
                         .style("font-weight", 100)
                         .style("text-align", "center")
                         .attr("class", "tableFont")
-                        
+
 
                     d3.select("#" + "row" + i)
                         .append("td")
