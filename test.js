@@ -700,7 +700,7 @@ d3.csv("https://data.jhkforecasts.com/pollster-ratings.csv", pollster_ratings =>
                 finaldata.forEach((d, i) => {
                     d.index = d.pollster + d.state + d.population
                 })
-                state == "All" ? finaldata.sort((a, b) => b.created_at - a.created_at) : finaldata.sort((a, b) => b.weight - a.weight)
+                finaldata.sort((a, b) => b.date - a.date)
 
                 var statedata = [
                     state == "All" ? 0 : Biden.filter(d => d.state == state)[0].margin,
