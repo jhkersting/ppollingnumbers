@@ -29,10 +29,13 @@
         src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
     <link rel="icon" href="https://jhkforecasts.com/LOGO-01.png">
     <script src="https://d3js.org/d3.v4.min.js"></script>
+    <script src="//d3js.org/queue.v1.min.js"></script>
+	<script src="//d3js.org/topojson.v1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-tip/0.7.1/d3-tip.min.js"></script>
     <link rel="stylesheet" href="https://use.typekit.net/htk2wjy.css">
     <link rel="stylesheet" href="https://projects.jhkforecasts.com/presidential-forecast/index.css">
     <script src="https:////cdn.jsdelivr.net/npm/jstat@latest/dist/jstat.min.js"></script>
+    
     <style>
         #tipDiv {
             display: inline;
@@ -94,7 +97,7 @@
         <a href="https://jhkforecasts.com">
             <img style="height:7vw;float: left;padding: 5px;" src="https://jhkforecasts.com/LOGO-01.png">
         </a>
-        <h1 style="float: left;padding:0vw 5px;font-size: 3vw;">+</h1>
+        <h1 style="float: left;padding:0vw 5px;font-size: 3vw;">&</h1>
         <a href="https://twitter.com/ppollingnumbers">
             <img style="height:7vw;float: left;padding: 5px;" src="pp-logo-01.svg">
         </a>
@@ -125,12 +128,11 @@
         </tbody>
     </table>
 
-    <h1 style="text-align: center;font-size: 5vw;font-weight: 900;background-color: #3E5AA9;color: white;">
-        Trump v. Biden Polling Average</h1>
-    <a href="https://twitter.com/jhkersting">
-        <h2 style="font-weight: 700;text-decoration: underline;font-size: 2vw;">Created By : Jack Kersting</h2>
-    </a>
-
+    <h1 style="text-align: center;font-size: 5vw;font-weight: 900;background-color: dodgerblue;color: white;">
+        2020 Senate Ratings</h1>
+    <div id="usmap"></div>
+    
 </body>
+<script src="2020-senate.js"></script>
 
 </html>
