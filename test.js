@@ -730,7 +730,7 @@ d3.csv("https://data.jhkforecasts.com/pollster-ratings.csv", pollster_ratings =>
                 .y(d => y(d[1]))
                 .curve(d3.curveCatmullRom)
 
-                pollLine.append("text")
+            pollLine.append("text")
                 .text("State Polls")
                 .attr("y", 30)
                 .attr("x", 200)
@@ -740,7 +740,7 @@ d3.csv("https://data.jhkforecasts.com/pollster-ratings.csv", pollster_ratings =>
                 .attr("dominant-baseline", "central")
                 .attr("text-anchor", "middle")
 
-                pollLine.append("text")
+            pollLine.append("text")
                 .text("National Polls")
                 .attr("y", 60)
                 .attr("x", 200)
@@ -750,6 +750,15 @@ d3.csv("https://data.jhkforecasts.com/pollster-ratings.csv", pollster_ratings =>
                 .attr("dominant-baseline", "central")
                 .attr("text-anchor", "middle")
 
+            pollLine.append("text")
+                .text("Up = Better for Biden")
+                .attr("y", 90)
+                .attr("x", 200)
+                .attr("fill", "black")
+                .style("font-weight", "500")
+                .style("font-size", 17)
+                .attr("dominant-baseline", "central")
+                .attr("text-anchor", "middle")
             pollLine.append("path")
                 .attr("class", "line")
                 .style("stroke", "dodgerblue")
