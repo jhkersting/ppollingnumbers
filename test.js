@@ -31,6 +31,9 @@ d3.csv("https://data.jhkforecasts.com/pollster-ratings.csv", pollster_ratings =>
     var svg = d3.select("#usmap")
         .append("svg")
         .attr("viewBox", '100 -150 820 650');
+    var pollLine = d3.select("#pollLine")
+        .append("svg")
+        .attr("viewBox", '0 0 1000 400');
 
     var width3 = 1020;
     var height3 = 500;
@@ -67,7 +70,7 @@ d3.csv("https://data.jhkforecasts.com/pollster-ratings.csv", pollster_ratings =>
         { Grade: "A/B", Value: 1.3 },
         { Grade: "B+", Value: 1.25 },
         { Grade: "B", Value: 1.15 },
-        { Grade: "B-", Value:1.1 },
+        { Grade: "B-", Value: 1.1 },
         { Grade: "B/C", Value: 1 },
         { Grade: "C+", Value: .9 },
         { Grade: "C", Value: .8 },
@@ -90,7 +93,7 @@ d3.csv("https://data.jhkforecasts.com/pollster-ratings.csv", pollster_ratings =>
         var pvi = pvi.map((d, i) => {
             return {
                 state: d.state,
-                pvi: +d.pvi,
+                pvi: -(+d.pvi),
                 thirdparty: +d.thirdparty,
                 electoralvotes: +d.ev
             }
@@ -108,8 +111,7 @@ d3.csv("https://data.jhkforecasts.com/pollster-ratings.csv", pollster_ratings =>
             var data = data.filter(d => d.answer != "Schultz")
             var data = data.filter(d => d.candidate_party != "LIB")
             data.forEach((d, i) => {
-                d.party_id = d.candidate_party == "DEM" ? 0 : 1
-                return d;
+                d.party_id = d.candidate_party == "DEM" ? 0 : d.candidate_party == "REP" ? 1 : 2
             })
             data.sort((a, b) => a.party_id - b.party_id)
 
@@ -140,9 +142,15 @@ d3.csv("https://data.jhkforecasts.com/pollster-ratings.csv", pollster_ratings =>
                     gop_pct: +datanew[i][1].pct,
                     poll_index: datanew[i][0].state == "" ? "US" + datanew[i][0].pollster : datanew[i][0].state + datanew[i][0].pollster,
                     margin: +datanew[i][0].pct - +datanew[i][1].pct,
-                    created_at: cp(datanew[i][0].created_at)
+                    created_at: cp(datanew[i][0].created_at),
+                    statePVI: datanew[i][0].state == "" ? 0 : pvi.filter(d => d.state == datanew[i][0].state).length == 0 ? 0 : +pvi.filter(d => d.state == datanew[i][0].state)[0].pvi
                 }
             })
+            data_new.forEach((d, i) => {
+                d.pviDiff = d.margin - d.statePVI
+            })
+
+            console.log(data_new)
             var data_new = data_new.filter(d => d.dem == "Biden" || d.dem == "Sanders")
             var data_new = data_new.filter(d => d.gop == "Trump")
 
@@ -160,14 +168,14 @@ d3.csv("https://data.jhkforecasts.com/pollster-ratings.csv", pollster_ratings =>
                     d.n_adjusted = d.n > 4000 ? Math.pow((d.n - 4000), .05) + 27 : Math.pow(d.n, .5)
                     d.weight = d.n_adjusted * d.population_adj
                     d.sum = (d.dem_pct + d.gop_pct)
-                    d.weight = d.weight* d.grade_value
-                    d.time_weight = d.days_old < 60 ? (d.weight - ((d.weight / 60) * d.days_old)) :2 * d.grade_value
+                    d.weight = d.weight * d.grade_value
+                    d.time_weight = d.days_old < 60 ? (d.weight - ((d.weight / 60) * d.days_old)) : 2 * d.grade_value
                     d.dem_adj = d.dem_pct
                     d.gop_adj = d.gop_pct
                     d.margin = d.dem_adj - d.gop_adj
                     return d;
                 })
-                console.log(data_filtered.filter(d=>d.state=="Georgia"))
+                console.log(data_filtered.filter(d => d.state == "Georgia"))
 
                 var data_filtered = d3.nest()
                     .key(d => d.poll_index)
@@ -225,7 +233,7 @@ d3.csv("https://data.jhkforecasts.com/pollster-ratings.csv", pollster_ratings =>
 
                 for (var i = 0; i < polling_avg.length; i++) {
 
-                    var fundamental_margin = (-polling_avg[i].pvi / 100) + us_polling_avg
+                    var fundamental_margin = (polling_avg[i].pvi / 100) + us_polling_avg
                     var fund_margin_weight = fundamental_margin * 0.0001
                     var polling_margin_weight = polling_avg[i].polling_margin * polling_avg[i].polling_weight
                     var margin = (polling_margin_weight + fund_margin_weight) / (polling_avg[i].polling_weight + 0.0001)
@@ -690,6 +698,75 @@ d3.csv("https://data.jhkforecasts.com/pollster-ratings.csv", pollster_ratings =>
             var gradeColor = d3.scaleLinear()
                 .domain([0.2, .85, 1.1, 1.5])
                 .range(["#F0474E", "#FCDD26", "#37B76E", "#2079FF"])
+            var dataNew = data_filtered.filter(d => d.dem == "Biden")
+            var dataNew = dataNew.filter(d => d.date >= new Date(2020, 0, 1))
+            console.log(dataNew)
+
+            var x = d3.scaleTime()
+                .rangeRound([30, 970])
+                .domain([new Date(2020, 0, 1), new Date()])
+
+            var y = d3.scaleLinear()
+                .domain(d3.extent(dataNew, d => d.pviDiff))
+                .rangeRound([370, 10]);
+
+            pollLine.selectAll("ds")
+                .data(dataNew)
+                .enter()
+                .append("circle")
+                .attr("r", 3)
+                .attr("cx", d => x(d.date))
+                .attr("cy", d => y(d.pviDiff))
+                .attr("fill", d => d.state == "US" ? "dodgerblue" : "#00C181")
+                .attr("opacity", .4)
+
+            var loess = d3.regressionLoess()
+                .x(d => d.date)
+                .y(d => d.pviDiff)
+                .bandwidth(.25);
+
+            var lineLoess = d3.line()
+                .x(d => x(d[0]))
+                .y(d => y(d[1]))
+                .curve(d3.curveCatmullRom)
+
+                pollLine.append("text")
+                .text("State Polls")
+                .attr("y", 30)
+                .attr("x", 200)
+                .attr("fill", "#00C181")
+                .style("font-weight", "500")
+                .style("font-size", 20)
+                .attr("dominant-baseline", "central")
+                .attr("text-anchor", "middle")
+
+                pollLine.append("text")
+                .text("National Polls")
+                .attr("y", 60)
+                .attr("x", 200)
+                .attr("fill", "dodgerblue")
+                .style("font-weight", "500")
+                .style("font-size", 20)
+                .attr("dominant-baseline", "central")
+                .attr("text-anchor", "middle")
+
+            pollLine.append("path")
+                .attr("class", "line")
+                .style("stroke", "dodgerblue")
+                .attr("d", lineLoess(loess(dataNew.filter(d => d.state == "US"))));
+
+            pollLine.append("path")
+                .attr("class", "line")
+                .style("stroke", "#00C181")
+                .attr("d", lineLoess(loess(dataNew.filter(d => d.state != "US"))));
+
+            pollLine.append("g")
+                .attr("transform", "translate(0," + 370 + ")")
+                .call(d3.axisBottom(x));
+
+            pollLine.append("g")
+                .attr("transform", "translate(30," + 0 + ")")
+                .call(d3.axisLeft(y));
 
             t(d3.select('#state-search').property('value'), "Biden", "All");
             function t(state, candidate, pollster) {

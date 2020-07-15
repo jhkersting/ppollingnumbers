@@ -1,6 +1,7 @@
 var map = d3.select("#usmap")
     .append("svg")
     .attr("viewBox", '75 -40 900 550');
+
 var widthmap = 1020
 var heightmap = 500;
 var projection = d3.geoAlbersUsa()

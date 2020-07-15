@@ -33,6 +33,8 @@
     <link rel="stylesheet" href="https://use.typekit.net/htk2wjy.css">
     <link rel="stylesheet" href="https://projects.jhkforecasts.com/presidential-forecast/index.css">
     <script src="https:////cdn.jsdelivr.net/npm/jstat@latest/dist/jstat.min.js"></script>
+    <script src="https://unpkg.com/d3-regression@1.3.4/dist/d3-regression.min.js"></script>
+
     <style>
         #tipDiv {
             display: inline;
@@ -48,7 +50,8 @@
                 width: 100%;
                 margin-left: 0%;
             }
-            .tableFont{
+
+            .tableFont {
                 font-size: 2.5vw;
             }
         }
@@ -63,14 +66,17 @@
                 width: 80%;
                 margin-left: 10%;
             }
-            .tableFont{
+
+            .tableFont {
                 font-size: 1.5vw;
             }
         }
-        th{
+
+        th {
             border-bottom: black solid 1px;
             padding: 5px;
         }
+
         table {
             width: 100%;
             border-collapse: collapse;
@@ -78,8 +84,13 @@
             font-weight: 100;
             text-transform: uppercase;
         }
-        td{
+
+        td {
             padding: 5px;
+        }
+
+        .linkHover:hover {
+            text-decoration: underline solid;
         }
     </style>
 
@@ -91,63 +102,15 @@
 
     </div>
 
-    <?xml version="1.0" encoding="utf-8"?>
-    <!-- Generator: Adobe Illustrator 24.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-    <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-        x="0px" y="0px" viewBox="0 0 4151 400" enable-background="new 0 0 4151 400" xml:space="preserve">
-        <a xlink:href="https://jhkforecasts.com">
-            <g>
-                <g>
-                    <path fill="#3E5AA9"
-                        d="M145.24,311.05l41.28-45.53c15.75,17.87,33.19,28.09,50.21,28.09c23.83,0,37.02-9.36,37.02-44.26V136.15
-                        H168.65V74.88h178.3v180.43c0,55.32-28.08,101.28-107.66,101.28C208.64,356.58,171.2,345.52,145.24,311.05z" />
-                </g>
-                <polygon fill="#3E5AA9" points="107.06,103.07 189.09,43.42 189.09,162.71 		" />
-            </g>
+    <div style="height:7vw">
+        <a href="https://jhkforecasts.com">
+            <img style="height:7vw;float: left;padding: 5px;" src="https://jhkforecasts.com/LOGO-01.png">
         </a>
-        <g>
-            <path d="M464.81,209.25h-26.82v-18.5h26.82V163h19.12v27.75h26.82v18.5h-26.82V237h-19.12V209.25z" />
-        </g>
-        <a id="bSRY1g.tif" xlink:href="https://twitter.com/PpollingNumbers">
-            <g>
-                <g>
-                    <g>
-                        <path fill="#FFFFFF" d="M550-5.82c145.41,0,290.82,0.05,436.23-0.18c6.3-0.01,7.55,1.24,7.54,7.54
-                            c-0.23,142.9-0.23,285.8,0,428.7c0.01,6.3-1.24,7.55-7.54,7.54c-145.41-0.23-290.82-0.18-436.23-0.18
-                            C550,289.79,550,141.98,550-5.82z" />
-                        <path fill="#F37478"
-                            d="M710.07,166.75c-7.61,0.56-15.29-0.21-22.82,2c-12.53,3.67-20.64,11.47-24.15,24.07
-                            c-3.21,11.5-3.15,23.04,0.06,34.44c4.72,16.78,17.87,25.76,38.79,25.98c13.41,0.14,23.91,5.04,30.82,16.5
-                            c7.38,12.25,6.53,24.68-1.3,36.38c-7.58,11.34-22.5,16.98-35.72,13.11c-13.02-3.82-21.54-12.67-24.26-26.23
-                            c-1.02-5.08-1.11-10.34-1.56-15.53c-1.56-17.78-12.94-30.19-30.42-32.95c-4.53-0.72-9.11-1.25-13.68-1.51
-                            c-18.19-1.03-31.7-14.82-31.84-32.68c-0.15-18.17,13.62-32.68,31.96-33.83c4.87-0.31,9.79-0.61,14.57-1.55
-                            c17.93-3.53,28.27-15.47,29.48-33.64c0.42-6.35-0.38-12.91,3.13-18.75c3.29,2.88,2.37,6.61,1.99,10.19
-                            c-1.68,15.89,9.47,29.13,25.42,30.12c3.02,0.19,6.11-0.11,8.9,1.44C710.37,164.92,710.59,165.74,710.07,166.75z" />
-                        <path fill="#8FB1DD"
-                            d="M813.47,222.11c10.01,28.15,35.17,39.43,63.16,28.15c17.65-7.11,22.71-21.82,23.1-39.18
-                            c0.46-20.11,16.02-35.55,35-34.66c18.04,0.84,31.6,15.47,31.51,33.98c-0.09,18.72-12.69,31.62-31.45,32.4
-                            c-6.72,0.28-13.5,0.89-19.8,3.28c-16.59,6.29-24.34,17.91-24.5,37.01c-0.11,13.51-4.59,24.89-16.31,31.92
-                            c-24.49,14.7-50.57-1.75-51.66-32.19c-0.69-19.38-9.19-31.5-25.69-37.36c-6.79-2.41-14.14,0.83-20.7-2.6
-                            c1.84-2.67,4.75-2.6,7.44-2.61c10.67-0.04,18.82-4.44,24.5-13.5C809.36,224.71,810.79,222.64,813.47,222.11z" />
-                        <path fill="#A1A0A0"
-                            d="M787.68,176.92c27.96-5,36.27-14.98,38.14-45.84c0.86-14.24,8.68-25.13,22.53-29.12
-                            c13.23-3.81,25.47-1.48,35.17,9.34c9.01,10.04,11.67,24.09,5.74,35.79c-6.85,13.53-18.41,19.67-33.54,20.05
-                            c-16.32,0.4-30.11,5.64-36.93,22.08c-2.48,5.98-3.3,12.34-3.6,18.8c-0.17,3.6,0.74,7.4-1.6,10.69
-                            c-2.49-1.49-2.56-4.06-2.63-6.45c-0.42-14.47-7.01-24.94-19.98-31.44C789.41,180.03,787.62,179.21,787.68,176.92z" />
-                        <path fill="#7489BD" d="M787.68,176.92c19.82,7,26.56,22.11,25.92,41.78c-0.04,1.13-0.09,2.27-0.13,3.4
-                            c-6.96,16.78-20.39,21.93-37.34,20.76c-17.88-2.54-29.25-15.59-29.23-33.67c0-3.64,0.35-7.27,0.54-10.91
-                            c3.34-13.41,12.38-21.19,25.08-21.56C777.57,176.79,782.62,176.86,787.68,176.92z" />
-                        <path fill="#E36569"
-                            d="M710.37,165.33c-17.29,2.03-29.93-3.91-37.31-20.47c-3.46-7.78,2.21-14.91,0.04-22.31
-                            c6.01-16.2,20.39-25.04,36.32-22.33c17.72,3.01,27.8,15.64,28.62,35.84C738.51,153.64,725.78,167.1,710.37,165.33z" />
-                        <path fill="#A2A1A1" d="M710.37,165.33c16.63-2.77,24.59-13.73,27.68-29.28c2.29,3.6,1.06,7.76,1.86,11.62
-                            c3.67,17.9,16.09,25.71,32.61,29.05c-12.04,2.91-19.38,11.29-25.08,21.57c-3.71-20.86-18.02-29.18-37.36-31.54
-                            C710.15,166.27,710.25,165.8,710.37,165.33z" />
-                    </g>
-                </g>
-            </g>
+        <h1 style="float: left;padding:0vw 5px;font-size: 3vw;">+</h1>
+        <a href="https://twitter.com/ppollingnumbers">
+            <img style="height:7vw;float: left;padding: 5px;" src="pp-logo-01.svg">
         </a>
-    </svg>
+    </div>
 
 
 
@@ -178,11 +141,15 @@
         </tbody>
     </table>
 
-    <h1 style="text-align: center;font-size: 5vw;font-weight: 900;background-color: #3E5AA9;color: white;">
+    <h1 style="text-align: center;font-size: 5vw;font-weight: 900;background-color: dodgerblue;color: white;">
         Trump v. Biden Polling Average</h1>
-    <a href="https://twitter.com/jhkersting">
-        <h2 style="font-weight: 700;text-decoration: underline;font-size: 2vw;">Created By : Jack Kersting</h2>
+        <a style="text-decoration: underline;" href="2020-senate">
+        <h2 style="font-weight: 700;text-decoration: underline;font-size: 2vw;color: #ff6060">2020 Senate Ratings</h2>
     </a>
+    <a href="https://twitter.com/jhkersting">
+        <h2 style="font-weight: 700;text-decoration: underline;font-size: 2vw;;">Created By : Jack Kersting</h2>
+    </a>
+    
     <p style="text-indent: 20px;margin: 10px;"> The data created below is calculated from the 538 polling database. The
         polling average are calculated by combining the national polling and pvi with state polling averages. States
         with more polling however don't weigh the national vote. This is purely a polling average. </p>
@@ -198,6 +165,9 @@
     </div>
     <h1 style="text-align: center;font-weight: 700;">Battleground States</h1>
     <div id="tossups"></div>
+    <h1 style="font-size: 3vw;text-align: left;font-weight: 700;margin-left:2%">State Polls v. National Polls</h1>
+    <p style="font-size: 1.5vw;text-align: left;margin-left:5%">The graph below shows the difference in state polls vs national polls.</p>
+    <div id="pollLine"></div>
     <h1 style="font-size: 3vw;text-align: left;font-weight: 700;margin-left:2%">Polls</h1>
     <p style="font-size: 1.5vw;text-align: left;margin-left:5%">click box at end to filter by pollster</p>
     <div id="polls">
@@ -264,7 +234,7 @@
     </div>
     <div id="top"></div>
     <div style="margin-top: 20px;" id="table"></div>
-
+    <script src="https://unpkg.com/d3-regression@1.3.4/dist/d3-regression.min.js"></script>
     <script src="test.js"></script>
     <div style="text-align:center">
         <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
