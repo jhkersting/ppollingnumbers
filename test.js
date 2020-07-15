@@ -699,7 +699,6 @@ d3.csv("https://data.jhkforecasts.com/pollster-ratings.csv", pollster_ratings =>
                 .domain([0.2, .85, 1.1, 1.5])
                 .range(["#F0474E", "#FCDD26", "#37B76E", "#2079FF"])
             var dataNew = data_filtered.filter(d => d.dem == "Biden")
-            var dataNew = dataNew.filter(d => d.date >= new Date(2020, 0, 1))
             console.log(dataNew)
 
             var x = d3.scaleTime()
@@ -718,7 +717,7 @@ d3.csv("https://data.jhkforecasts.com/pollster-ratings.csv", pollster_ratings =>
                 .attr("cx", d => x(d.date))
                 .attr("cy", d => y(d.pviDiff))
                 .attr("fill", d => d.state == "US" ? "dodgerblue" : "#00C181")
-                .attr("opacity", .4)
+                .attr("opacity", .35)
 
             var loess = d3.regressionLoess()
                 .x(d => d.date)
@@ -729,6 +728,11 @@ d3.csv("https://data.jhkforecasts.com/pollster-ratings.csv", pollster_ratings =>
                 .x(d => x(d[0]))
                 .y(d => y(d[1]))
                 .curve(d3.curveCatmullRom)
+
+            var areaLoess = d3.area()
+                .x(d => x(d[0]))
+                .y0(d => y(d[1]-4))
+                .y1(d => y(d[1]+4))
 
             pollLine.append("text")
                 .text("State Polls")
@@ -759,6 +763,7 @@ d3.csv("https://data.jhkforecasts.com/pollster-ratings.csv", pollster_ratings =>
                 .style("font-size", 17)
                 .attr("dominant-baseline", "central")
                 .attr("text-anchor", "middle")
+
             pollLine.append("path")
                 .attr("class", "line")
                 .style("stroke", "dodgerblue")
@@ -768,6 +773,25 @@ d3.csv("https://data.jhkforecasts.com/pollster-ratings.csv", pollster_ratings =>
                 .attr("class", "line")
                 .style("stroke", "#00C181")
                 .attr("d", lineLoess(loess(dataNew.filter(d => d.state != "US"))));
+
+                pollLine.append("path")
+                .attr("class", "line")
+                .style("fill", "dodgerblue")
+                .attr("d", areaLoess(loess(dataNew.filter(d => d.state == "US"))))
+                .attr("opacity", .15)
+            
+            pollLine.append("path")
+                .attr("class", "line")
+                .style("fill", "#00C181")
+                .attr("d", areaLoess(loess(dataNew.filter(d => d.state != "US"))))
+                .attr("opacity", .15)
+
+            pollLine.append("rect")
+            .attr("x",0)
+            .attr("y",0)
+            .attr("height",500)
+            .attr("width",30)   
+            .attr("fill","white")
 
             pollLine.append("g")
                 .attr("transform", "translate(0," + 370 + ")")
