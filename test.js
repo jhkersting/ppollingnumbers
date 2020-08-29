@@ -234,9 +234,9 @@ d3.csv("https://data.jhkforecasts.com/pollster-ratings.csv", pollster_ratings =>
                 for (var i = 0; i < polling_avg.length; i++) {
 
                     var fundamental_margin = (polling_avg[i].pvi / 100) + us_polling_avg
-                    var fund_margin_weight = fundamental_margin * 0.0001
+                    var fund_margin_weight = fundamental_margin * 10
                     var polling_margin_weight = polling_avg[i].polling_margin * polling_avg[i].polling_weight
-                    var margin = (polling_margin_weight + fund_margin_weight) / (polling_avg[i].polling_weight + 0.0001)
+                    var margin = (polling_margin_weight + fund_margin_weight) / (polling_avg[i].polling_weight + 10)
                     var sim_stdev = Math.sqrt((Math.pow(polling_avg[i].stdev, 2) * 2))
                     var third_party = pvi[i].thirdparty * national_third_party
                     var gop = ((1 - third_party) / 2) - (margin / 2)
